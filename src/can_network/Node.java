@@ -1,3 +1,4 @@
+package can_network;
 
 public class Node {
 
