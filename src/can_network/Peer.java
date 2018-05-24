@@ -29,7 +29,7 @@ public class Peer {
 	public static void main(String[] args) {
 		try {
 			Peer peer = new Peer();
-			System.out.println(peer.ipAddress.getHostAddress() );
+			System.out.println("IP-Addresse: " + peer.ipAddress.getHostAddress() );
 			
 			
 			
