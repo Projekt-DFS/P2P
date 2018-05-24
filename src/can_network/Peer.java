@@ -32,7 +32,11 @@ public class Peer {
 			System.out.println("IP-Addresse: " + peer.ipAddress.getHostAddress() );
 			
 			
-			
+			InetAddress[] iad = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
+			for(InetAddress i : iad) {
+				System.out.println(i);
+			}
+
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
