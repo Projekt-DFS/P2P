@@ -19,7 +19,7 @@ public class Peer {
 	
 	private static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	private static final String ip_adresse = "10.9.41.197";
+	private static final String ip_adresse = "127.0.0.1";
 	
 	
 	//Variablen
