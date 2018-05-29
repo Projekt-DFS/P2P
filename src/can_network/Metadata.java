@@ -1,27 +1,126 @@
+package can_network;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.LinkedList;
+
+import can_network.User;
+
 /**
  * 
  */
-package can_network;
+
 
 /**
- * @author thoma
+ * @author Thomas Spanier
  *
  */
-public class Metadata {
+public class Metadata implements Serializable {
 
 	/**
 	 * 
 	 */
-	public Metadata() {
-		// TODO Auto-generated constructor stub
-	}
-
+	private static final long serialVersionUID = 5637147796716729841L;
+	//Variables
+	private String photographer;
+	private User user;
+	private Date date;
+	//private Ort location;
+	private LinkedList<String> tagList;
+	//TODO Location implementieren
+	
 	/**
-	 * @param args
+	 * Constructor
+	 * Sets metadata object
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public Metadata(String photographer, User user, Date date, LinkedList<String> tagList) {
+		tagList = new LinkedList<String>();
+		setPhotographer(photographer);
+		setUser(user);
+		setDate(date);
+		setTagList(tagList);
 	}
 
+	
+	
+	// get-methods
+	public String getPhotographer() {
+		return photographer;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+		
+	public Date getDate() {
+		return date;
+	}
+	
+	public String getTagList () {
+		return tagList.toString();
+	}
+	
+	
+	//set-methods
+	public void setPhotographer(String photographer) {
+		this.photographer = photographer;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public void setTagList(LinkedList<String> tagList) {
+		this.tagList = tagList;
+	}
+	
+	
+	//Tag-editing-methods 
+	/**
+	 * adds a new Tag
+	 * @param newtag
+	 */
+	public void addTag(String newtag) {
+		//TODO Exception emptyString
+		for(String tag : tagList) {
+			if(tag.equals(newtag)) {
+				return;
+			}
+		}
+		tagList.add(newtag);
+	}
+	
+	/**
+	 * Deletes a tag
+	 * @param deletetag
+	 */
+	public void deleteTag(String deletetag) {
+		//TODO Exception tag not found
+		for(String tag : tagList) {
+			if(tag.equals(deletetag)) {
+				tagList.remove(tag);
+				return;
+			}
+		}
+	}
+	
+	/**
+	 * Edits a tag
+	 * @param oldTag
+	 * @param newTag
+	 */
+	public void editTag(String oldTag, String newTag) {
+		for(String tag : tagList) {
+			if(tag.equals(oldTag)) {
+				tagList.remove(tag);
+				tagList.add(newTag);
+				return;
+			}
+		}
+	}
+	
 }

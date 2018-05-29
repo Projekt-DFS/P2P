@@ -27,6 +27,7 @@ public class Dialog {
 	 * Konstruktor
 	 */
 	public Dialog() {
+		//TODO all the stuff
 		input = new Scanner(System.in);
 	}
 

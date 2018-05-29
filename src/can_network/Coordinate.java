@@ -5,7 +5,7 @@ package can_network;
 
 /**
  * @author Thomas Spanier
- *
+ * @deprecated
  */
 public class Coordinate {
 	private double x;

@@ -14,6 +14,7 @@ import org.junit.Test;
 
 /**
  * @author Thomas Spanier
+ * JUNIT Test for Users
  *
  */
 public class UserTest {

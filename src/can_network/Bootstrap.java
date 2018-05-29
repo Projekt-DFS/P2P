@@ -17,8 +17,13 @@ public class Bootstrap {
 	//IP-Adresse?
 	//private Zone initialZone;
 	
-	
+	/**
+	 * Constructor
+	 * If a userList is already present, this list will be deserialized and be used
+	 * 
+	 */
 	public Bootstrap() {
+		//TODO extend Peer Quatsch rein
 		userList = new LinkedList<User>();
 		try {
 			importUserList();
@@ -30,7 +35,13 @@ public class Bootstrap {
 		
 	}
 	
-	
+	/**
+	 * Creates a new User
+	 * @param id identifier
+	 * @param name of the new User
+	 * @param password of the new User
+	 * @return success or fail message
+	 */
 	public String createUser(int id, String name, String password) {
 		can_network.User newUser;
 		newUser = new can_network.User(id, name, password);
@@ -43,7 +54,10 @@ public class Bootstrap {
 		return ("User has been added");
 	}
 	
-	
+	/**
+	 * Deletes the User
+	 * @param name of the deleting User
+	 */
 	public void deleteUser(String name) {
 		// TODO Auto-generated method stub
 		int i = 0;
@@ -57,7 +71,7 @@ public class Bootstrap {
 	
 	
 	/**
-	 * 
+	 * Check, if Username and Password are correct
 	 * @param name
 	 * @param password
 	 * @return true, if User & Password are correct, otherwise false
@@ -72,15 +86,22 @@ public class Bootstrap {
 		return false;
 	}
 	
-	
+	/**
+	 * 
+	 * @return a List with all Users
+	 */
 	public String getAllUsers() {
 		StringBuffer sb = new StringBuffer();
 		for (User user : userList) {
-			sb.append(user.getName()).append(", ").append(user.getPassword()).append(" | ");
+			sb.append(user.toString()).append(" | ");
 		}
 		return sb.toString();
 	}
 	
+	/**
+	 * 
+	 * @return how many Users are registered
+	 */
 	public int getUserCount() {
 		int count = 0;
 		for(@SuppressWarnings("unused") User user : userList) {
@@ -89,11 +110,18 @@ public class Bootstrap {
 		return count;
 	}
 	
+	/**
+	 * Delete all Users
+	 */
 	public void dumpUsers() {
 		userList.removeAll(userList);
 	}
 	
 	
+	/**
+	 * Serialize the UserList in "userList.dat"
+	 * @throws IOException
+	 */
 	public void exportUserList() throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(
             new BufferedOutputStream(
@@ -103,6 +131,12 @@ public class Bootstrap {
     }
     
     
+	/**
+	 * Deserialize the UserList from "userList.dat"
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 * @throws FileNotFoundException if userList.dat does not exist
+	 */
    @SuppressWarnings("unchecked")
    public void importUserList() throws IOException, ClassNotFoundException, FileNotFoundException {
         ObjectInputStream in;

@@ -24,15 +24,19 @@ public class User implements Serializable {
 	
 	
 	/**
-	 * Konstruktor
+	 * Constructor
+	 * @param id
+	 * @param name
+	 * @param password
 	 */
 	public User(int id, String name, String password) {
+		//TODO id sinnvoll?
 		this.id=id;
 		setName(name);
 		setPassword(password);
 	}
 	
-	
+	//get-methods
 	public int getID() {
 		return id;
 	}
@@ -46,6 +50,7 @@ public class User implements Serializable {
 	}
 	
 	
+	//set-methods
 	public void setName(String name) {
 		if (name.trim().isEmpty()) {
 			throw new Exceptions.EmptyStringException();
@@ -61,9 +66,13 @@ public class User implements Serializable {
 		this.password=password;
 	}
 
+	/**
+	 * ToString method
+	 * @return Username and Password
+	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(getName()).append(getPassword());
+		sb.append(getName()).append(", ").append(getPassword());
 		
 		return sb.toString();
 	}
