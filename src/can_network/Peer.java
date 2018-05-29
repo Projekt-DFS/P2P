@@ -1,7 +1,4 @@
 package can_network;
-import java.util.*;
-import java.net.*;
-import java.io.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,47 +14,22 @@ import org.glassfish.jersey.server.ResourceConfig;
  */
 public class Peer {
 	
+	
+	
+	//Variablen
 	private static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
 	private static final String ip_adresse = "127.0.0.1";
 	
 	
-	//Variablen
-	private InetAddress ipAddress;
-	//private HashMap photos;
-	
-	
 	
 	
 	//Constructor
-	public Peer() throws UnknownHostException{
+	public Peer() {
 		
-			ipAddress = java.net.Inet4Address.getLocalHost();
-
 	}
 	
-	/**
-	 * @param args
-	 */
-	/* 
-	 *public static void main(String[] args) {
-		
 	
-		try {
-			Peer peer = new Peer();
-			System.out.println("IP-Addresse: " + peer.ipAddress.getHostAddress() );
-			
-			
-			InetAddress[] iad = InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
-			for(InetAddress i : iad) {
-				System.out.println(i);
-			}
-
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}*/
-		
 
 	   public static void main( String[] args ) throws IOException, InterruptedException 
 	   {

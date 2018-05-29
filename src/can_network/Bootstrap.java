@@ -15,11 +15,10 @@ public class Bootstrap {
 	//Variables
 	public LinkedList<User> userList;
 	//IP-Adresse?
-	private Zone initialZone;
+	//private Zone initialZone;
 	
 	
 	public Bootstrap() {
-		//TODO if present, deserialize userList
 		userList = new LinkedList<User>();
 		try {
 			importUserList();
@@ -104,6 +103,7 @@ public class Bootstrap {
     }
     
     
+   @SuppressWarnings("unchecked")
    public void importUserList() throws IOException, ClassNotFoundException, FileNotFoundException {
         ObjectInputStream in;
         userList = new LinkedList<User>();
