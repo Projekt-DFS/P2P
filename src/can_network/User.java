@@ -9,14 +9,18 @@ import java.io.Serializable;
  * @author z002vb6m
  *
  */
-@SuppressWarnings("serial")
 public class User implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3153801662101748013L;
 	//Variables
 	private int id;
 	private String name;
 	private String password;
+	//imageList?
 	
 	
 	/**
@@ -42,19 +46,26 @@ public class User implements Serializable {
 	}
 	
 	
-	
-	
-	//ToDo: Exception richtig machen
 	public void setName(String name) {
-		/* if(name ="") {
-			throw new EmptyStringException;
-		}*/
+		if (name.trim().isEmpty()) {
+			throw new Exceptions.EmptyStringException();
+		}
 		this.name=name;
 		
 	}
 	
 	public void setPassword(String password) {
+		if (password.trim().isEmpty()) {
+			throw new Exceptions.EmptyStringException();
+		}
 		this.password=password;
 	}
 
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(getName()).append(getPassword());
+		
+		return sb.toString();
+	}
+	
 }
