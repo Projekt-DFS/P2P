@@ -13,13 +13,11 @@ import can_network.User;
 
 /**
  * @author Thomas Spanier
+ * TODO serialVersionUID???
  *
  */
 public class Metadata implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5637147796716729841L;
 	//Variables
 	private String photographer;
@@ -85,7 +83,11 @@ public class Metadata implements Serializable {
 	 * @param newtag
 	 */
 	public void addTag(String newtag) {
-		//TODO Exception emptyString
+		//Deny empty tags
+		if (newtag.trim().isEmpty()) {
+			throw new Exceptions.EmptyStringException();
+		}
+		//If tag already present, skip
 		for(String tag : tagList) {
 			if(tag.equals(newtag)) {
 				return;
@@ -114,6 +116,11 @@ public class Metadata implements Serializable {
 	 * @param newTag
 	 */
 	public void editTag(String oldTag, String newTag) {
+		//Deny empty tags
+		if (newTag.trim().isEmpty()) {
+			throw new Exceptions.EmptyStringException();
+		}
+		//Search for tag
 		for(String tag : tagList) {
 			if(tag.equals(oldTag)) {
 				tagList.remove(tag);
