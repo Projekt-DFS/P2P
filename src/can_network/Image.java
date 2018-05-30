@@ -1,11 +1,8 @@
 package can_network;
 
+import java.awt.geom.Point2D;
 import java.util.Date;
 import java.util.LinkedList;
-
-import can_network.Coordinate;
-import can_network.User;
-
 import java.io.*;
 import java.awt.image.BufferedImage;
 
@@ -23,15 +20,15 @@ public class Image implements Serializable {
 	private static final long serialVersionUID = 4903375720434123881L;
 	//Variables
 	private BufferedImage img;
-	private Coordinate canCoordinate;
+	private Point2D.Double canCoordinate;
 	
 	private Metadata meta;
 	
 	/**
 	 * Constructor
-	 * Sets image object including metadata object
+	 * Sets image object including metadata
 	 */
-	public Image(BufferedImage img, Coordinate canCoordinate, 
+	public Image(BufferedImage img, Point2D.Double canCoordinate, 
 			String photographer, User user, Date date, LinkedList<String> tagList) {
 		
 		meta = new Metadata(photographer, user, date, tagList);
@@ -44,7 +41,7 @@ public class Image implements Serializable {
 		return img;
 	}
 	
-	public Coordinate getCoordinate() {
+	public Point2D.Double getCoordinate() {
 		return canCoordinate;
 	}
 	
@@ -56,8 +53,13 @@ public class Image implements Serializable {
 		this.img = img;
 	}
 	
-	public void setCoordinate(Coordinate canCoordinate) {
-		this.canCoordinate= canCoordinate;
+	public void setCoordinate(Point2D.Double canCoordinate) {
+		if (canCoordinate.x > 1.0 || canCoordinate.y > 1.0 || canCoordinate.x < 0.0 || canCoordinate.y < 0.0) {
+			throw new IllegalArgumentException("Bad Coordinate");
+		} else {
+			this.canCoordinate= canCoordinate;
+		}
+		
 	}
 	
 	
