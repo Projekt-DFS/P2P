@@ -3,16 +3,19 @@ package can_network;
 import java.awt.geom.Point2D;
 import java.util.Date;
 import java.util.LinkedList;
+
+import javax.imageio.ImageIO;
+
 import java.io.*;
 import java.awt.image.BufferedImage;
-
-
+import java.awt.image.RenderedImage;
+import java.awt.Image;
 
 /**
  * @author Thomas Spanier
  *
  */
-public class Image implements Serializable {
+public class ImageContainer implements Serializable {
 //TODO Metadaten in Image-Klasse speichern?
 	/**
 	 * 
@@ -20,6 +23,7 @@ public class Image implements Serializable {
 	private static final long serialVersionUID = 4903375720434123881L;
 	//Variables
 	private BufferedImage img;
+	private Image thumbnail;
 	private Point2D.Double canCoordinate;
 	
 	private Metadata meta;
@@ -28,11 +32,12 @@ public class Image implements Serializable {
 	 * Constructor
 	 * Sets image object including metadata
 	 */
-	public Image(BufferedImage img, Point2D.Double canCoordinate, 
+	public ImageContainer(BufferedImage img, Point2D.Double canCoordinate, 
 			String photographer, User user, Date date, LinkedList<String> tagList) {
 		
 		meta = new Metadata(photographer, user, date, tagList);
 		setImage(img);
+		createThumbnail(img);
 		setCoordinate(canCoordinate);
 	}
 
@@ -63,9 +68,21 @@ public class Image implements Serializable {
 	}
 	
 	
+	private void createThumbnail(BufferedImage img) {
+		//Image temp = img.getScaledInstance(100,100, BufferedImage.SCALE_FAST);
+		//thumbnail =
+		//TODO use thumbnailator?
+	}
 	
-	
-	
+	//Temporary
+	public void saveThumbnail() {
+		try {
+			ImageIO.write((RenderedImage) thumbnail, "jpg", new File("thumbnail.jpg"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 	
