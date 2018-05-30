@@ -13,7 +13,7 @@ public class Dialog {
 
 	//Messages
 	private static final int BEENDEN			=	0;
-	private static final int BOOTSTAP_ANLEGEN	=	1;
+	private static final int BOOTSTRAP_ANLEGEN	=	1;
 	private static final int PEER_ANLEGEN		=	2;
 	private static final int USER_ANLEGEN		=	3;
 	private static final int USER_AUTHENTICATE	=	4;

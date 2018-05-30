@@ -3,10 +3,9 @@
  */
 package can_network;
 import java.io.*;
-//import java.util.*;
 
 /**
- * @author thoma
+ * @author Thomas Spanier
  *
  */
 public class PlayGround {
@@ -24,13 +23,23 @@ public class PlayGround {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		new PlayGround().start();
+		//new PlayGround().startBootstrapTest();
+		new PlayGround().startUserTest();
 		
 
 	}
+	/*
+	//Peer & Bootstrap Playground
+	private void startBootstrapTest() {
+		Bootstrap booty = new Bootstrap();
+		
+	}
+	*/
 	
 	
-	private void start() {
+	
+	//User Playground
+	private void startUserTest() {
 		testExport();
 		testImport();
 		testDelete();
@@ -38,8 +47,8 @@ public class PlayGround {
 	
 	private void testDelete() {
 		bt = new Bootstrap();
-		bt.createUser(0, "0", "0");
-		bt.createUser(1, "1", "1");
+		bt.createUser("0", "0");
+		bt.createUser("1", "1");
 
 		System.out.println(bt.getAllUsers());
 		bt.deleteUser("0");
@@ -48,8 +57,8 @@ public class PlayGround {
 	
 	private void testExport() {
 		bt = new Bootstrap();
-		bt.createUser(0, "0", "0");
-		bt.createUser(1, "1", "1");
+		bt.createUser("0", "0");
+		bt.createUser("1", "1");
 		
 		try {
 			bt.exportUserList();
