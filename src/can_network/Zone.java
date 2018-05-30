@@ -1,57 +1,63 @@
 package can_network;
-/**
- * 
- */
 
-/**
- * @author Thomas Spanier
- * @deprecated
- */
+import java.awt.geom.Point2D;
+
 public class Zone {
-	Coordinate start;
-	Coordinate end;
-	/**
-	 * 
-	 */
-	public Zone(Coordinate start, Coordinate end) {
-		this.start=start;
-		this.end=end;
+    private Point2D.Double bottomLeft, bottomRight, upperLeft, upperRight;
+    
+    public Zone() {
+    
+    }
+    
+    public void setZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
+        this.bottomLeft = bottomLeft;
+        this.upperRight = upperRight;
+        calculateRest();
+    }
+    
+    public void calculateRest() {
+        upperLeft = new Point2D.Double(bottomLeft.getX(), upperRight.getY());
+        bottomRight = new Point2D.Double(upperRight.getX(), bottomLeft.getY());
+    }
+    
+    public Point2D.Double calculateCentrePoint() {
+        return new Point2D.Double((bottomRight.getX() - bottomLeft.getX()) / 2, (upperRight.getY() - bottomRight.getY()) / 2);
+    }
+    
+    public double getHeight() {
+        return upperLeft.getY() - bottomLeft.getY();
+    }
+    
+    public double getWidth() {
+        return bottomRight.getX() - bottomLeft.getX(); 
+    }
+    
+    public double getZoneVolume() {
+        return getHeight() * getWidth();
+    }
+    
+    public boolean isSquare() {
+        return getHeight() == getWidth();
+    }
+    
+    public Point2D.Double getUpperLeft() {
+        return upperLeft;
+    }
+    
+    public Point2D.Double getBottomLeft() {
+        return bottomLeft;
+    }
+    
+    public Point2D.Double getBottomRight() {
+        return bottomRight;
+    }
+    
+    public Point2D.Double getUpperRight() {
+        return upperRight;
+    }
+    
+    public String toString() {
+		return "bottomLeft: " + bottomLeft + " bottomRight: " + bottomRight + 
+				           " upperLeft: " + upperLeft + " upperRight: " + upperRight;
 	}
-	
-	public Coordinate getStart() {
-		return start;
-	}
-	
-	public Coordinate getEnd() {
-		return end;
-	}
-	
-	public void setStart(Coordinate start) {
-		this.start=start;
-	}
-	
-	public void setEnd(Coordinate end) {
-		this.end= end;
-	}
-	
-	public boolean equals(Object o) {
-		if(!(o instanceof Zone)) {
-			return false;
-		}
-		
-		Zone zone = (Zone) o;
-		if(zone.start.equals(this.start) && zone.end.equals(this.end)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	public String toString() {
-		StringBuffer sb= new StringBuffer();
-		sb.append("[").append(start.toString()).append(" | ").append(end.toString()).append("]");
-		return sb.toString();
-	}
-	
-	
 }
