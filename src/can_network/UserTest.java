@@ -6,10 +6,7 @@ package can_network;
 import static org.junit.Assert.*;
 import java.io.*;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -24,43 +21,15 @@ public class UserTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		bt = new Bootstrap();
 		bt.dumpUsers();
-		bt.createUser(2, "Tommi", "TS");
-		bt.createUser(3, "Thomas", "pw");
+		bt.createUser("Tommi", "TS");
+		bt.createUser("Thomas", "pw");
 		
 	}
 
-	
-	
-	
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/*@Test
-	public void test() {
-		fail("Not yet implemented");
-	}*/
 	
 	@Test
 	public void testAuthenticate() {
