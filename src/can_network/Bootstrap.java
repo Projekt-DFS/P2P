@@ -1,5 +1,6 @@
 package can_network;
 
+import java.awt.geom.Point2D;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
@@ -10,10 +11,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
-public class Bootstrap {
+public class Bootstrap extends Peer {
 
 	//Variables
-	public LinkedList<User> userList;
+	private LinkedList<User> userList;
+	private int peerCount;									//wird bei jedem splitZone um 1 erhoeht, dient zur Bestimmung von id
 	//IP-Adresse?
 	//private Zone initialZone;
 	
@@ -24,15 +26,19 @@ public class Bootstrap {
 	 */
 	public Bootstrap() {
 		//TODO extend Peer Quatsch rein
+		//Create or load UserList
 		userList = new LinkedList<User>();
 		try {
 			importUserList();
 		} catch (FileNotFoundException e){
 				System.out.println("File not found");
 		} catch (IOException | ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		}
 		
+		//Create a new Zone
+		createZone(new Point2D.Double(0.0, 0.0), new Point2D.Double(1.0, 1.0));
+		id = 0;					//Bootstrap has always ID 0
 	}
 	
 	/**
@@ -42,11 +48,12 @@ public class Bootstrap {
 	 * @param password of the new User
 	 * @return success or fail message
 	 */
-	public String createUser(int id, String name, String password) {
+	//public String createUser(int id, String name, String password) {
+	public String createUser(String name, String password) {
 		can_network.User newUser;
-		newUser = new can_network.User(id, name, password);
+		newUser = new can_network.User(name, password);
 		for(User user : userList) {
-			if(user.getID() == id || user.getName().equals(name)) {
+			if(user.getName().equals(name)) {
 				return ("User already exists");
 			}
 		}
