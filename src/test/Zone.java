@@ -1,15 +1,17 @@
-package can_network;
+package test;
+/**
+ * 
+ */
 
 import java.awt.geom.Point2D;
 
 public class Zone {
-    private Point2D.Double bottomLeft, bottomRight, upperLeft, upperRight;
+    public Point2D.Double bottomLeft, bottomRight, upperLeft, upperRight;
     
     public Zone() {
     
     }
     
-
     public Zone(Point2D.Double bottomLeft, Point2D.Double bottomRight, Point2D.Double upperLeft, Point2D.Double upperRight) {
     	this.bottomLeft = bottomLeft;
     	this.bottomRight = bottomRight;
