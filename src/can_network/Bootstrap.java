@@ -25,7 +25,7 @@ public class Bootstrap extends Peer {
 	 * 
 	 */
 	public Bootstrap() {
-		//TODO extend Peer Quatsch rein
+		//TODO extend Peer Quatsch rein Save Images
 		//Create or load UserList
 		userList = new LinkedList<User>();
 		try {
