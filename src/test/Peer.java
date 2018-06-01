@@ -1,4 +1,4 @@
-package can_network;
+package test;
 
 import java.io.IOException;
 import java.net.URI;

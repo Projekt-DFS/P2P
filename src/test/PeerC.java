@@ -1,31 +1,32 @@
-package can_network;
+package test;
 
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URI;
-import java.awt.geom.Point2D;
-
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-/**
- * @author Thomas Spanier
- *
- */
-public class Peer {
+public class PeerC {
 	
 	
 	
 	//Variablen
 	private static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	private static final String ip_adresse = "127.0.0.1";
+	private static final String ip_adresse = "192.168.2.111";
 	
 	private Zone ownZone;
 	HashMap neighbours = new HashMap();
-	HashMap coordinates = new HashMap();
+	HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
     
     public void createZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
         ownZone = new Zone();
@@ -44,24 +45,50 @@ public class Peer {
 	
 	
 	//Constructor
-	public Peer() {
+	public PeerC() {
 			
 		
 	}
 	
 	public void createNeighbours() {
-		neighbours.put(new Long(ipToLong("192.168.2.110")), ipToLong("192.168.2.109"));
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.109"));
+						
+		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong(ip_adresse));
+		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong(ip_adresse));		
+	}
+	public void checkZone (double x, double y) {
+		//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
+			
+			if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
+			
+			}
+			else
+			{
+				for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
+					if(x >= entry.getValue().bottomLeft.getX() && x <= entry.getValue().bottomRight.getX()) {
+						
+					        
+				     
+				      String webContextPath = "/routing";
+				      String baseUrl        = "http://"+ip_adresse+":"+port;
+				      
+				    //  System.out.println( "\nAngefragte URL: " + baseUrl + webContextPath + "?x=" + x + "?y=" + y );
+
+				      Client c = ClientBuilder.newClient();
+				      WebTarget target = c.target( baseUrl );
+				      
+				      System.out.println( "\nTextausgabe:" );
+				      System.out.println( target.path( webContextPath ).queryParam( "y", y ).request( MediaType.TEXT_PLAIN ).get( String.class ) );
+				      System.out.println( "\nHTML-Ausgabe:" );
+				      System.out.println( target.path( webContextPath ).queryParam( "x", x ).request( MediaType.TEXT_HTML ).get( String.class ) );
+				      
+					}
+					
+				}
+			} 
+		}
 		
-		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong("192.168.2.110"));
-		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong("192.168.2.110"));
-		neighbours.put(new Long(ipToLong("192.168.2.113")), ipToLong("192.168.2.110"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong("192.168.2.111"));
-		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong("192.168.2.111"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.112"));
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.112"));
+	public void createCoordinates(Long key, Zone zone) {
+		coordinates.put(key, zone);
 	}
 	
 	public long ipToLong(String ipAddress) {
@@ -123,7 +150,7 @@ public class Peer {
 	      System.out.println("Ip String: " + tmp.longToIp((long)tmp.neighbours.get(tmp.ipToLong("192.168.2.110"))));
 	      
 	      final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-	            URI.create( baseUrl ), new ResourceConfig( PeerService.class ), false );
+	            URI.create( baseUrl ), new ResourceConfig( PeerServiceC.class ), false );
 	      Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {
 	         @Override
 	         public void run() {
@@ -137,7 +164,5 @@ public class Peer {
 		                                     baseUrl + PeerService.webContextPath ) );
 		
 		  Thread.currentThread().join();;
-	}	
+	}
 }
-
-

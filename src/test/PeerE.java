@@ -1,27 +1,22 @@
-package can_network;
+package test;
 
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URI;
-import java.awt.geom.Point2D;
-
 import java.util.HashMap;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-/**
- * @author Thomas Spanier
- *
- */
-public class Peer {
+public class PeerE {
 	
 	
 	
 	//Variablen
 	private static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	private static final String ip_adresse = "127.0.0.1";
+	private static final String ip_adresse = "192.168.2.113";
 	
 	private Zone ownZone;
 	HashMap neighbours = new HashMap();
@@ -44,24 +39,19 @@ public class Peer {
 	
 	
 	//Constructor
-	public Peer() {
+	public PeerE() {
 			
 		
 	}
 	
 	public void createNeighbours() {
-		neighbours.put(new Long(ipToLong("192.168.2.110")), ipToLong("192.168.2.109"));
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.109"));
 		
-		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong("192.168.2.110"));
-		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong("192.168.2.110"));
-		neighbours.put(new Long(ipToLong("192.168.2.113")), ipToLong("192.168.2.110"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong("192.168.2.111"));
-		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong("192.168.2.111"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.112"));
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.112"));
+		neighbours.put(new Long(ipToLong("192.168.2.110")), ipToLong(ip_adresse));
+		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong(ip_adresse));
+	}
+	
+	public void createCoordinates(Zone zone, Long value) {
+		coordinates.put(zone, value);
 	}
 	
 	public long ipToLong(String ipAddress) {
@@ -137,7 +127,5 @@ public class Peer {
 		                                     baseUrl + PeerService.webContextPath ) );
 		
 		  Thread.currentThread().join();;
-	}	
+	}
 }
-
-
