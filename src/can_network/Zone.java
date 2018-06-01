@@ -1,7 +1,4 @@
 package can_network;
-/**
- * 
- */
 
 import java.awt.geom.Point2D;
 
@@ -12,6 +9,7 @@ public class Zone {
     
     }
     
+
     public Zone(Point2D.Double bottomLeft, Point2D.Double bottomRight, Point2D.Double upperLeft, Point2D.Double upperRight) {
     	this.bottomLeft = bottomLeft;
     	this.bottomRight = bottomRight;
