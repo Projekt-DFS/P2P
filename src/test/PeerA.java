@@ -19,21 +19,21 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class PeerA {
 	//Variablen
-	private static final int port = 4434;
+	private  static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	private static final String ip_adresse = "192.168.2.104";
+	private  static final String ip_adresse = "192.168.2.104";
 	
-	private static Zone ownZone;
-	private static HashMap neighbours = new HashMap();
-	private static HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
+	private  Zone ownZone;
+	private  HashMap neighbours = new HashMap();
+	private  HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
 
    
-    public static void createZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
+    public  void createZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
       //  ownZone = new Zone();
         ownZone.setZone(bottomLeft, upperRight);
     }
 	
-    public static void splitZone(Peer newPeer) {
+    public  void splitZone(PeerA newPeer) {
         if (ownZone.isSquare()) {
             newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
             ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
@@ -49,7 +49,7 @@ public class PeerA {
 			
 		
 	}
-	public static String checkZone (double x, double y) {
+	public  String checkZone (double x, double y) {
 	//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
 	
  		if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
@@ -82,17 +82,17 @@ public class PeerA {
 		return "foo";
 	}
 	
-	public static void createNeighbours() {
+	public void createNeighbours() {
 		neighbours.put(new Long(ipToLong("192.168.2.110")), ipToLong(ip_adresse));
 		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong(ip_adresse));
 		
 	}
 	
-	public static void createCoordinates(Long key, Zone zone) {
+	public void createCoordinates(Long key, Zone zone) {
 		coordinates.put(key, zone);
 	}
 	
-	public static long ipToLong(String ipAddress) {
+	public long ipToLong(String ipAddress) {
 
 		// ipAddressInArray[0] = 192
 		String[] ipAddressInArray = ipAddress.split("\\.");
@@ -116,7 +116,7 @@ public class PeerA {
 	}
 		
 	
-		public static String longToIp(long i) {
+		public String longToIp(long i) {
 
 			return ((i >> 24) & 0xFF) + 
 	                   "." + ((i >> 16) & 0xFF) + 
@@ -125,15 +125,15 @@ public class PeerA {
 
 		}
 		
-	    public static String toStringZone() {
+	    public String toStringZone() {
 	        return ownZone.toString();
 	    }
 	    
-	    public static boolean hasSquareZone() {
+	    public boolean hasSquareZone() {
 	        return ownZone.isSquare();
 	    }
 	
-	  /* public void start() {
+	   public void start() {
 		   String baseUrl = "http://"+ip_adresse+":"+port;
 
 		    System.out.println("Ende");
@@ -168,7 +168,7 @@ public class PeerA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};
-	   }*/
+	   }
 
 	   public static void main( String[] args ) throws IOException, InterruptedException 
 	   {

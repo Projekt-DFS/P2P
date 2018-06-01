@@ -33,7 +33,7 @@ public class PeerB {
         ownZone.setZone(bottomLeft, upperRight);
     }
 	
-    public void splitZone(Peer newPeer) {
+    public void splitZone(PeerB newPeer) {
         if (ownZone.isSquare()) {
             newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
             ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
@@ -140,7 +140,7 @@ public class PeerB {
 	   public static void main( String[] args ) throws IOException, InterruptedException 
 	   {
 	      String baseUrl = ( args.length > 0 ) ? args[0] : "http://"+ip_adresse+":"+port;
-	      Peer tmp = new Peer();
+	      PeerB tmp = new PeerB();
 	      
 	      Zone zoneA = new Zone (new Point2D.Double(0.5, 0.0), new Point2D.Double(0.5, 0.0), new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5));
 	      Zone zoneB = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(1.0, 0.0), new Point2D.Double(0.5, 0.5), new Point2D.Double(1.0, 0.5));
