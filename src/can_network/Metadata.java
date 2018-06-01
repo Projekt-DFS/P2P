@@ -14,7 +14,7 @@ import can_network.User;
 /**
  * @author Thomas Spanier
  * TODO serialVersionUID???
- *
+ *@deprecated
  */
 public class Metadata implements Serializable {
 
