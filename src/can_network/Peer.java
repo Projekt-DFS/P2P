@@ -28,28 +28,15 @@ public class Peer {
 	private static final int port = 4434;					//TODO temporary
 	// Aktuelle IP-Adresse des Servers
 
-	private static final String ip_adresse = "127.0.0.1";
+	private  static final String ip_adresse = "127.0.0.1";
 	
-	private Zone ownZone;
+	
 	HashMap neighbours = new HashMap();
 	HashMap coordinates = new HashMap();
     
-    public void createZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
-        ownZone = new Zone();
-        ownZone.setZone(bottomLeft, upperRight);
-    }
-	
-    public void splitZone(Peer newPeer) {
-        if (ownZone.isSquare()) {
-            newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
-            ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
-        } else {
-            newPeer.createZone(ownZone.getBottomLeft(), (new Point2D.Double(ownZone.getBottomRight().getX(), ownZone.calculateCentrePoint().getY())));
-            ownZone.setZone(new Point2D.Double(ownZone.getUpperLeft().getX(), ownZone.calculateCentrePoint().getY()), ownZone.getUpperRight());    
-        }
-    }
 
-	private static final String ip_adresse = "127.0.0.1";	//TODO temporary
+
+
 	private ArrayList<Integer> neighbourList;				//Fill
 	protected int id;										//TODO useful? for Neighbourlist
 
@@ -118,48 +105,6 @@ public class Peer {
 
 		}
 		
-	    public String toStringZone() {
-	        return ownZone.toString();
-	    }
-	    
-	    public boolean hasSquareZone() {
-	        return ownZone.isSquare();
-	    }
-	
-
-
-	   public static void main( String[] args ) throws IOException, InterruptedException 
-	   {
-	      String baseUrl = ( args.length > 0 ) ? args[0] : "http://"+ip_adresse+":"+port;
-	      Peer tmp = new Peer();
-	      
-	      Zone zoneA = new Zone (new Point2D.Double(0.5, 0.0), new Point2D.Double(0.5, 0.0), new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5));
-	      Zone zoneB = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(1.0, 0.0), new Point2D.Double(0.5, 0.5), new Point2D.Double(1.0, 0.5));
-	      Zone zoneC = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5), new Point2D.Double(0.0, 1.0), new Point2D.Double(0.5, 1.0));
-	      Zone zoneD = new Zone (new Point2D.Double(0.5, 0.5), new Point2D.Double(0.75, 0.5), new Point2D.Double(0.5, 1.0), new Point2D.Double(0.75, 1.0));
-	      Zone zoneE = new Zone (new Point2D.Double(0.75, 0.5), new Point2D.Double(1.0, 0.5), new Point2D.Double(0.75, 1.0), new Point2D.Double(1.0, 1.0));
-	      
-
-	      System.out.println("Key Dez: "+ tmp.neighbours.get(tmp.ipToLong("192.168.2.110")));
-	      System.out.println("Ip String: " + tmp.longToIp((long)tmp.neighbours.get(tmp.ipToLong("192.168.2.110"))));
-	      
-	      final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-	            URI.create( baseUrl ), new ResourceConfig( PeerService.class ), false );
-	      Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {
-	         @Override
-	         public void run() {
-	            server.shutdownNow();
-	         }
-	      } ) );
-	      server.start();
-		
-		  System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
-		                                     + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-		                                     baseUrl + PeerService.webContextPath ) );
-		
-		  Thread.currentThread().join();;
-	}	
-
 
 	/**
 	 * TODO Temporary Main function

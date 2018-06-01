@@ -18,6 +18,7 @@ import java.lang.reflect.*;
 @Path( PeerService.webContextPath )
 public class PeerServiceA
 {
+	PeerA tmpPeer = null;
    static final String webContextPath = "/start";
   
    @GET @Produces( MediaType.TEXT_PLAIN )
@@ -37,7 +38,9 @@ public class PeerServiceA
    @Path("/routing")
    public String routing(@QueryParam("x") double x, @QueryParam("y") double y)
    {
-	  PeerA tmpPeer = new PeerA();
+	 tmpPeer.checkZone(x, y);
+	 return "kjlkj";
+	  /* PeerA tmpPeer = new PeerA();
 	  Class tmpClass = PeerA.class;
 	  Method method;
 	  method = null;
@@ -73,6 +76,16 @@ public class PeerServiceA
 	}
 	  
 	  
-	  return tmp;
+	  return tmp;*/
    }
+
+  public PeerServiceA() {
+	   	tmpPeer = new PeerA();
+	   	start();
+		
+	
+  }
+  public void start() {
+	  tmpPeer.start();
+  }
 }
