@@ -15,7 +15,8 @@ public class Bootstrap extends Peer {
 
 	//Variables
 	private LinkedList<User> userList;
-	private int peerCount;									//wird bei jedem splitZone um 1 erhoeht, dient zur Bestimmung von id
+	//private int peerCount;									//wird bei jedem splitZone um 1 erhoeht, dient zur Bestimmung von id
+	//TODO ID von IP Adresse
 	//IP-Adresse?
 	//private Zone initialZone;
 	
@@ -26,6 +27,16 @@ public class Bootstrap extends Peer {
 	 */
 	public Bootstrap() {
 		//TODO extend Peer Quatsch rein Save Images
+		/*
+		 * Eigener Ordner hash-funktion als name
+		 * Peer sucht im ordner nach den image-objekten
+		 * 
+		 * BT - Create Image
+		 * Peer - Save Image
+		 * Peer - Load Image
+		 * 
+		 * 
+		 */
 		//Create or load UserList
 		userList = new LinkedList<User>();
 		try {
