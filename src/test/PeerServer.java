@@ -19,18 +19,37 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 public class PeerServer {
 	
+	/*
+	 * 5 statische Zone die auf 5 Peers verteilt werden können
+	 */
+	
 	static Zone zoneA = new Zone (new Point2D.Double(0.0, 0.0), new Point2D.Double(0.5, 0.0), new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5));
 	static Zone zoneB = new Zone (new Point2D.Double(0.5, 0.0), new Point2D.Double(1.0, 0.0), new Point2D.Double(0.5, 0.5), new Point2D.Double(1.0, 0.5));
     static Zone zoneC = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5), new Point2D.Double(0.0, 1.0), new Point2D.Double(0.5, 1.0)); 
+	static Zone zoneD = new Zone (new Point2D.Double(0.5, 0.5), new Point2D.Double(0.75, 0.5), new Point2D.Double(0.5, 1.0), new Point2D.Double(0.75, 1.0));
+	static Zone zoneE = new Zone (new Point2D.Double(0.75, 0.5), new Point2D.Double(1.0, 0.5), new Point2D.Double(0.75, 1.0), new Point2D.Double(1.0, 1.0));
 	
-    public static PeerA testPeer = new PeerA(zoneA);
+    /*
+     * initialisier der Klasse PeerA
+     * übergabe der eigenen Zone
+     */
+	public static PeerA testPeer = new PeerA(zoneA);
 	
 	public static void main(String [] args ) throws IOException, InterruptedException 
 	   {
 		 
 		
-	   // PeerServiceA tmpPs = new PeerServiceA(zoneA);	    
-		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.110"), zoneB);
+	   /*
+	    * Es werden die Nachbar-Peers mit ihren verantwörtlichen Zonen in eine Hash-Map gespeichert
+	    * 
+	    * Muss für jeden Peer neu angepasst werden
+	    * z.B 2.Peer 
+	    * testPeer.createCoordinates(testPeer.ipToLong("192.168.2.109"), zoneA);
+		  testPeer.createCoordinates(testPeer.ipToLong("192.168.2.112"), zoneD);
+		  testPeer.createCoordinates(testPeer.ipToLong("192.168.2.113"), zoneE);
+	    *    
+	    */
+		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.109"), zoneB);
 		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.111"), zoneC);
 	    
 		String baseUrl ="http://192.168.2.109:4434";

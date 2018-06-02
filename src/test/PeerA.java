@@ -56,11 +56,18 @@ public class PeerA {
 			
 		
 	}
+	
+	/**
+	 * 
+	 * @param x ist die Richtungskomponente in x-Richtung (nach rechts ;) ) 	 
+	 * @param y ist die Richtungskomponente in y-Richtung 
+	 * @return Ip-Adresse des zuständigen Peers
+	 */
 	public  String checkZone (double x, double y) {
 	//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
-		Double mitteEigeneZone = ownZone.calculateCentrePoint();
+		
 		String ausgabe_ip ="";
-		double tmpDistanz;
+
  		
 		if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
 		 return ip_adresse;
@@ -83,7 +90,7 @@ public class PeerA {
 			      
 			      System.out.println( "\nTextausgabe:" );
 			      
-			     // System.out.println( target.path( webContextPath ).queryParam( "x&y", x, "&y", y ).request( MediaType.TEXT_PLAIN ).get( String.class ));
+			  
 			      ausgabe_ip = (target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
 			      System.out.println( target.path( webContextPath ));
 			      
@@ -104,6 +111,11 @@ public class PeerA {
 		coordinates.put(key, zone);
 	}
 	
+	/**
+	 * Wandelt eine übergeben IP-Adresse vom String zu long um
+	 * @param ipAddress IP-Adresse als String
+	 * @return IP-Adresse long
+	 */
 	public long ipToLong(String ipAddress) {
 
 		// ipAddressInArray[0] = 192
@@ -127,7 +139,11 @@ public class PeerA {
 
 	}
 		
-	
+	/**
+	 * Wandelt long zu String um
+	 * @param IP-Adresse als long
+	 * @return IP-Adresse als String
+	 */
 		public String longToIp(long i) {
 
 			return ((i >> 24) & 0xFF) + 
@@ -145,69 +161,5 @@ public class PeerA {
 	        return ownZone.isSquare();
 	    }
 	
-	/*   public void start() throws InterruptedException {
-		   String baseUrl = "http://"+ip_adresse+":"+port;
-
-		    System.out.println("Webserver: "+ ip_adresse);
-	      
-	      final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-	            URI.create( baseUrl ), new ResourceConfig( PeerServiceA.class ), false );
-	      Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {
-	         @Override
-	         public void run() {
-	            server.shutdownNow();
-	         }
-	      } ) );
-
-		  try {
-			  server.start();
-			  
-			  Thread.currentThread().run();
-				  
-			  System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
-		                + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-		                baseUrl + PeerServiceA.webContextPath ) );
-			  
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		};
-		
-		
-
-		
-		
-	   }
-
-	 public static void main( String[] args ) throws IOException, InterruptedException 
-	   {
-	      String baseUrl = ( args.length > 0 ) ? args[0] : "http://"+ip_adresse+":"+port;
-
-	      
-	      Zone zoneB = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(1.0, 0.0), new Point2D.Double(0.5, 0.5), new Point2D.Double(1.0, 0.5));
-		  Zone zoneC = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5), new Point2D.Double(0.0, 1.0), new Point2D.Double(0.5, 1.0));  
-		  PeerA peerA = new PeerA();
-		  
-		  peerA.createCoordinates(peerA.ipToLong("192.168.2.110"), zoneB);
-		  peerA.createCoordinates(peerA.ipToLong("192.168.2.111"), zoneC);
-		  
-		  System.out.println("Ende");
-	      
-	      final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-	            URI.create( baseUrl ), new ResourceConfig( PeerServiceA.class ), false );
-	      Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {
-	         @Override
-	         public void run() {
-	            server.shutdownNow();
-	         }
-	      } ) );
-	      server.start();
-		
-		  System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
-		                                     + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-		                                     baseUrl + PeerServiceA.webContextPath ) );
-		
-		  Thread.currentThread().join();;
-	}*/
-
+	
 }

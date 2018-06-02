@@ -17,7 +17,7 @@ import java.lang.reflect.*;
 
 
 
-@Path( PeerService.webContextPath )
+@Path( PeerServiceA.webContextPath )
 public class PeerServiceA
 {
    public PeerA tmpPeer;
@@ -39,49 +39,12 @@ public class PeerServiceA
    }
    
   @GET
-   @Path("/routing")
+   @Path("/routing")  
    public String routing(@QueryParam("x") double x, @QueryParam("y") double y)
    {
 	 //tmpPeer.checkZone(x, y);
-	 return PeerServer.testPeer.checkZone(0.6d, 0.4d);
-	 
-	  /* PeerA tmpPeer = new PeerA();
-	  Class tmpClass = PeerA.class;
-	  Method method;
-	  method = null;
-	  try {
-	
-			method = tmpClass.getMethod("checkZone",double.class, double.class);
-		 
-	} catch (SecurityException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (NoSuchMethodException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	 
-		  System.out.println(method.getName());
-				  
-	 
+	 return PeerServer.testPeer.checkZone(0.6d, 0.4d);	 
 	  
-	  String tmp ="";
-	  
-	  try {
-		tmp =(String) method.invoke(tmpPeer, 1d,5d);
-	} catch (IllegalAccessException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IllegalArgumentException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (InvocationTargetException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	  
-	  
-	  return tmp;*/
    }
 
   public PeerServiceA(Zone tmpZone) {
