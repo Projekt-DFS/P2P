@@ -1,6 +1,7 @@
 package test;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
@@ -17,17 +18,22 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.sun.xml.internal.bind.v2.runtime.Coordinator;
+
 public class PeerA {
 	//Variablen
 	private  static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	private  static final String ip_adresse = "192.168.2.104";
+	private  static final String ip_adresse = "192.168.2.109";
 	
 	private  Zone ownZone;
 	private  HashMap neighbours = new HashMap();
 	private  HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
 
    
+	public void setZone(Zone tmpZone) {
+		this.ownZone = tmpZone;
+	}
     public  void createZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
       //  ownZone = new Zone();
         ownZone.setZone(bottomLeft, upperRight);
@@ -45,25 +51,30 @@ public class PeerA {
 
 	
 	//Constructor
-	public PeerA() {
+	public PeerA(Zone tmpZone) {
+			this.ownZone = tmpZone;
 			
 		
 	}
 	public  String checkZone (double x, double y) {
 	//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
-	
- 		if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
-		 return "hjhjh";
+		Double mitteEigeneZone = ownZone.calculateCentrePoint();
+		
+		double tmpDistanz;
+ 		
+		if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
+		 return ip_adresse;
 		}
 		else
 		{
+			
 			for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
+				
 				if(x >= entry.getValue().bottomLeft.getX() && x <= entry.getValue().bottomRight.getX()) {
-					
-				        
-			     
+	
 			      String webContextPath = "/routing";
-			      String baseUrl        = "http://"+ip_adresse+":"+port;
+			      String baseUrl ="http://"+ longToIp(entry.getKey());
+			     // String baseUrl        = "http://"+ip_adresse+":"+port;
 			      
 			    //  System.out.println( "\nAngefragte URL: " + baseUrl + webContextPath + "?x=" + x + "?y=" + y );
 
@@ -133,10 +144,10 @@ public class PeerA {
 	        return ownZone.isSquare();
 	    }
 	
-	   public void start() {
+	/*   public void start() throws InterruptedException {
 		   String baseUrl = "http://"+ip_adresse+":"+port;
 
-		    System.out.println("Ende");
+		    System.out.println("Webserver: "+ ip_adresse);
 	      
 	      final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
 	            URI.create( baseUrl ), new ResourceConfig( PeerServiceA.class ), false );
@@ -149,28 +160,25 @@ public class PeerA {
 
 		  try {
 			  server.start();
-			  Thread.currentThread().join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			  
+			  Thread.currentThread().run();
+				  
+			  System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
+		                + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
+		                baseUrl + PeerServiceA.webContextPath ) );
+			  
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		};
 		
-		System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
-                + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-                baseUrl + PeerService.webContextPath ) );
+		
 
-		try {
-			Thread.currentThread().join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		};
+		
+		
 	   }
 
-	   public static void main( String[] args ) throws IOException, InterruptedException 
+	 public static void main( String[] args ) throws IOException, InterruptedException 
 	   {
 	      String baseUrl = ( args.length > 0 ) ? args[0] : "http://"+ip_adresse+":"+port;
 
@@ -196,9 +204,9 @@ public class PeerA {
 		
 		  System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
 		                                     + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-		                                     baseUrl + PeerService.webContextPath ) );
+		                                     baseUrl + PeerServiceA.webContextPath ) );
 		
 		  Thread.currentThread().join();;
-	}
+	}*/
 
 }

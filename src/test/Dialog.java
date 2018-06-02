@@ -53,9 +53,28 @@ public class Dialog {
 	    
 	    peerE.createCoordinates(zoneB, peerE.ipToLong("192.168.2.110"));
 	    peerE.createCoordinates(zoneD, peerE.ipToLong("192.168.2.112"));
-	    */
-	   // peerA.start();*/
-		PeerServiceA tmpPs = new PeerServiceA();
+	 
+	   // peerA.start();
+		
+		Zone zoneA = new Zone (new Point2D.Double(0.5, 0.0), new Point2D.Double(0.5, 0.0), new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5));
+		Zone zoneB = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(1.0, 0.0), new Point2D.Double(0.5, 0.5), new Point2D.Double(1.0, 0.5));
+	    Zone zoneC = new Zone (new Point2D.Double(0.0, 0.5), new Point2D.Double(0.5, 0.5), new Point2D.Double(0.0, 1.0), new Point2D.Double(0.5, 1.0));
+		
+	    PeerServiceA tmpPs = new PeerServiceA(zoneA);
+		tmpPs.tmpPeer.createCoordinates(tmpPs.tmpPeer.ipToLong("192.168.2.110"), zoneB);
+		tmpPs.tmpPeer.createCoordinates(tmpPs.tmpPeer.ipToLong("192.168.2.111"), zoneC);
+		*/
+		try {
+			PeerServer.main(args);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//tmpPs.start();
 		
 	    System.out.println("Ende");
 	}

@@ -34,8 +34,15 @@ public class Zone {
         return new Point2D.Double((bottomRight.getX() - bottomLeft.getX()) / 2, (upperRight.getY() - bottomRight.getY()) / 2);
     }
     
+    public Point2D.Double calculateCentrePoint(Zone tmpZone) {
+        return new Point2D.Double((tmpZone.bottomRight.getX() - tmpZone.bottomLeft.getX()) / 2, (tmpZone.upperRight.getY() - tmpZone.bottomRight.getY()) / 2);
+    }
+    
     public double getHeight() {
         return upperLeft.getY() - bottomLeft.getY();
+    }
+    public double distanz(double x1, double y1, double x2, double y2){
+    	return Point2D.distanceSq(x1, y1, x2, y2);
     }
     
     public double getWidth() {

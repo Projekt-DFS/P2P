@@ -1,6 +1,7 @@
 package test;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
@@ -61,28 +62,32 @@ public class PeerB {
 	public void createCoordinates(Long key, Zone zone) {
 		coordinates.put(key, zone);
 	}
-	public void checkZone (double x, double y) {
+	public  String checkZone (double x, double y) {
 		//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
+			Double mitteEigeneZone = ownZone.calculateCentrePoint();
 			
+			
+	 		
 			if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
-			
+			 return ip_adresse;
 			}
 			else
 			{
+				
 				for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
+					
 					if(x >= entry.getValue().bottomLeft.getX() && x <= entry.getValue().bottomRight.getX()) {
-						
-					        
-				     
+		
 				      String webContextPath = "/routing";
-				      String baseUrl        = "http://"+ip_adresse+":"+port;
+				      String baseUrl ="http://"+ longToIp(entry.getKey());
+				     // String baseUrl        = "http://"+ip_adresse+":"+port;
 				      
 				    //  System.out.println( "\nAngefragte URL: " + baseUrl + webContextPath + "?x=" + x + "?y=" + y );
 
 				      Client c = ClientBuilder.newClient();
 				      WebTarget target = c.target( baseUrl );
 				      
-				      System.out.println( "\nTextausgabe:" );
+				      System.out.println( "Peer B" );
 				      System.out.println( target.path( webContextPath ).queryParam( "y", y ).request( MediaType.TEXT_PLAIN ).get( String.class ) );
 				      System.out.println( "\nHTML-Ausgabe:" );
 				      System.out.println( target.path( webContextPath ).queryParam( "x", x ).request( MediaType.TEXT_HTML ).get( String.class ) );
@@ -90,7 +95,8 @@ public class PeerB {
 					}
 					
 				}
-			} 
+			}
+			return "foo";
 		}
 		
 	
