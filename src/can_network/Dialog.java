@@ -19,7 +19,7 @@ public class Dialog {
 	private static final int PEER_ANLEGEN		=	2;
 	
 	private static final String MSG_BOOTSTRAP_FUNCTIONS = 
-            "1= Show users, 2= Create User, 3= Delete User, 4= : ";	//TODO Bootstrap functions
+            "1= Show users, 2= Create User, 3= Delete User, 0= END: ";	//TODO Bootstrap functions
 	
 	//private static final int USER_ANLEGEN		=	3;
 	//private static final int USER_AUTHENTICATE	=	4;

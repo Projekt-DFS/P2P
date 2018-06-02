@@ -2,6 +2,7 @@
  * 
  */
 package can_network;
+import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -36,36 +37,56 @@ public class PlayGround {
 
 	}
 	
+	
+	
+	
+	
+	//Image Playground
 	private void startImageTest() {
+		testSaveImage();
+		testLoadImage();
+	}
+	
+	private void testSaveImage() {
 		ImageContainer ic;
-		
-		//BufferedImage img = new BufferedImage();
+		bt = new Bootstrap();
 		BufferedImage img;
 		try {
-			img = ImageIO.read(new File("Test.jpg"));
-			Point2D.Double coordinate = new Point2D.Double(0.0, 0.0);
+			
+			img = ImageIO.read(new File("img.jpg"));
+			Point2D.Double coordinate = new Point2D.Double(0.5,0.8);
 			String photographer = "Knecht";
 			User owner = new User("user1", "pw");
 			Date date = new Date();
 			LinkedList<String> tagList = new LinkedList<String>();
-			ic = new ImageContainer(img, coordinate, photographer, owner, date, tagList);
-			ic.saveThumbnail();
+			bt.createImage(img, coordinate, photographer, owner, date, tagList);
+			//bt.createImage(ic);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	private void testLoadImage() {
+		ImageContainer ic;
+		bt = new Bootstrap();
+		Point2D.Double coordinate = new Point2D.Double(0.5, 0.8);
+		User owner = new User("user1", "pw");
+		
+		try {
+			ic = bt.getImage(owner, coordinate);
+			System.out.println(ic.getPhotographer());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
 	
 	
 	
