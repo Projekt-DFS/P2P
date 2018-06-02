@@ -59,7 +59,7 @@ public class PeerA {
 	public  String checkZone (double x, double y) {
 	//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
 		Double mitteEigeneZone = ownZone.calculateCentrePoint();
-		
+		String ausgabe_ip ="";
 		double tmpDistanz;
  		
 		if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
@@ -84,14 +84,14 @@ public class PeerA {
 			      System.out.println( "\nTextausgabe:" );
 			      
 			     // System.out.println( target.path( webContextPath ).queryParam( "x&y", x, "&y", y ).request( MediaType.TEXT_PLAIN ).get( String.class ));
-			      System.out.println(target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
+			      ausgabe_ip = (target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
 			      System.out.println( target.path( webContextPath ));
 			      
 				}
 				
 			}
 		}
-		return "foo";
+		return ausgabe_ip;
 	}
 	
 	public void createNeighbours() {
