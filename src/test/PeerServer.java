@@ -52,7 +52,7 @@ public class PeerServer {
 		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.109"), zoneB);
 		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.111"), zoneC);
 	    
-		String baseUrl ="http://192.168.2.109:4434";
+		String baseUrl ="http://"+ testPeer.ip_adresse+":"+testPeer.port;
 	     // final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create( baseUrl ), new ResourceConfig( PeerServiceA.class ), tmpPeer);
 	    final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create( baseUrl ), new ResourceConfig( PeerServiceA.class ), false );
 		      Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {

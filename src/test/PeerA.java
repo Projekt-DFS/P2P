@@ -22,9 +22,9 @@ import com.sun.xml.internal.bind.v2.runtime.Coordinator;
 
 public class PeerA {
 	//Variablen
-	private  static final int port = 4434;
+	public  static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	private  static final String ip_adresse = "192.168.2.109";
+	public  static final String ip_adresse = "192.168.2.109";
 	
 	private  Zone ownZone;
 	private  HashMap neighbours = new HashMap();
