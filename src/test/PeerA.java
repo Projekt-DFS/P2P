@@ -72,19 +72,20 @@ public class PeerA {
 				
 				if(x >= entry.getValue().bottomLeft.getX() && x <= entry.getValue().bottomRight.getX()) {
 	
-			      String webContextPath = "/routing";
-			      String baseUrl ="http://"+ longToIp(entry.getKey());
+			      String webContextPath = "routing";
+			      String baseUrl ="http://"+ longToIp(entry.getKey())+":4434/start/";
 			     // String baseUrl        = "http://"+ip_adresse+":"+port;
 			      
-			    //  System.out.println( "\nAngefragte URL: " + baseUrl + webContextPath + "?x=" + x + "?y=" + y );
+			      System.out.println( "\nAngefragte URL: " + baseUrl + webContextPath + "?x=" + x + "&y=" + y );
 
 			      Client c = ClientBuilder.newClient();
-			      WebTarget target = c.target( baseUrl );
+			      WebTarget  target = c.target( baseUrl );
 			      
 			      System.out.println( "\nTextausgabe:" );
-			      System.out.println( target.path( webContextPath ).queryParam( "y", y ).request( MediaType.TEXT_PLAIN ).get( String.class ) );
-			      System.out.println( "\nHTML-Ausgabe:" );
-			      System.out.println( target.path( webContextPath ).queryParam( "x", x ).request( MediaType.TEXT_HTML ).get( String.class ) );
+			      
+			     // System.out.println( target.path( webContextPath ).queryParam( "x&y", x, "&y", y ).request( MediaType.TEXT_PLAIN ).get( String.class ));
+			      System.out.println(target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
+			      System.out.println( target.path( webContextPath ));
 			      
 				}
 				
