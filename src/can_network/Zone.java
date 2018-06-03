@@ -29,7 +29,7 @@ public class Zone {
     }
     
     public Point2D.Double calculateCentrePoint() {
-        return new Point2D.Double((bottomRight.getX() - bottomLeft.getX()) / 2, (upperRight.getY() - bottomRight.getY()) / 2);
+        return new Point2D.Double(((bottomRight.getX() - bottomLeft.getX()) / 2) + bottomLeft.getX(), ((upperRight.getY() - bottomRight.getY()) / 2) + bottomRight.getY());
     }
     
     public double getHeight() {
