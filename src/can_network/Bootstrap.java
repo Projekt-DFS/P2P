@@ -282,5 +282,16 @@ public class Bootstrap extends Peer {
 		in.close();
 		return ic;
 	}
+	
+	public Point2D.Double hashToPoint(String imageName, String userName) {
+		final double multiplier = 1.0 / 2147483648.0;
+		
+		double x = imageName.hashCode() * multiplier;
+		double y = userName.hashCode() * multiplier;
+		
+		Point2D.Double coordinatePoint = new Point2D.Double(x, y);
+		
+		return coordinatePoint;
+	}
 
 }
