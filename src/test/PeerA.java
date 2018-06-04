@@ -1,13 +1,15 @@
 package test;
 
 import java.awt.geom.Point2D;
-
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+
 
 
 import javax.ws.rs.core.MediaType;
@@ -18,13 +20,20 @@ public class PeerA {
 	//Variablen
 	public  static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	public  static final String ip_adresse = "10.9.41.243";
+	InetAddress inet;
+	public  static String ip_adresse;
+	
 	
 	private  Zone ownZone;
 	private  HashMap neighbours = new HashMap();
 	private  HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
 
    
+	public String getIP() {
+		return inet.getHostAddress();
+	}
+	
+	
 	public void setZone(Zone tmpZone) {
 		this.ownZone = tmpZone;
 	}
@@ -47,6 +56,14 @@ public class PeerA {
 	//Constructor
 	public PeerA(Zone tmpZone) {
 			this.ownZone = tmpZone;
+		 try {
+			this.inet = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 System.out.println(inet.getHostAddress());
+		//ip_adresse = this.inet.toString();
 			
 		
 	}

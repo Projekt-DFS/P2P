@@ -14,7 +14,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import can.Peer;
+//import can.Peer;
 
 import java.awt.geom.Point2D;
 
@@ -61,18 +61,7 @@ public class Peer {
 	}
 	
 	public void createNeighbours() {
-		neighbours.put(new Long(ipToLong("192.168.2.110")), ipToLong("192.168.2.109"));
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.109"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong("192.168.2.110"));
-		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong("192.168.2.110"));
-		neighbours.put(new Long(ipToLong("192.168.2.113")), ipToLong("192.168.2.110"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.109")), ipToLong("192.168.2.111"));
-		neighbours.put(new Long(ipToLong("192.168.2.112")), ipToLong("192.168.2.111"));
-		
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.112"));
-		neighbours.put(new Long(ipToLong("192.168.2.111")), ipToLong("192.168.2.112"));
+
 	}
 	
 	public long ipToLong(String ipAddress) {
@@ -155,7 +144,7 @@ public class Peer {
     * Splits the Peer's Zone and transfers an half to the new Peer
     * @param newPeer
     */
-    public void splitZone(Peer newPeer) {
+    public Peer splitZone(Peer newPeer) {
         if (ownZone.isSquare()) {
             newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
             ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
@@ -163,6 +152,7 @@ public class Peer {
             newPeer.createZone(ownZone.getBottomLeft(), (new Point2D.Double(ownZone.getBottomRight().getX(), ownZone.calculateCentrePoint().getY())));
             ownZone.setZone(new Point2D.Double(ownZone.getUpperLeft().getX(), ownZone.calculateCentrePoint().getY()), ownZone.getUpperRight());    
         }
+        return newPeer;
     }
     
     /**
