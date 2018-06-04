@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import can.Peer;
+
 import java.awt.geom.Point2D;
 
 /**
@@ -192,14 +195,28 @@ public class Peer {
      * Generates a random Point in the Coordinate system
      * @return
      */
-    public Point2D.Double generateRandomPoint(){
-    	//TODO implement
-    	return new Point2D.Double(0.0, 0.0);
+    public Point2D.Double generateRandomPoint() {
+    	Point2D.Double randomPoint = new Point2D.Double(Math.random(), Math.random());
+    	return randomPoint;
     }
    
     
     public ArrayList<Integer> getNeighbourList(){
     	return neighbourList;
+    }
+    
+    public boolean isNeighbour(Peer potentialNeighbour) {
+    	
+    	if (ownZone.getLeftY().intersects(potentialNeighbour.ownZone.getRightY()) 
+    	    || ownZone.getRightY().intersects(potentialNeighbour.ownZone.getLeftY())
+    	    || ownZone.getUpperX().intersects(potentialNeighbour.ownZone.getBottomX())
+    	    || ownZone.getBottomX().intersects(potentialNeighbour.ownZone.getUpperX())) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
+    	
     }
    
 
