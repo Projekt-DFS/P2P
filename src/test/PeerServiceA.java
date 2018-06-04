@@ -4,17 +4,6 @@ package test;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
-
-import org.junit.runners.parameterized.TestWithParameters;
-
-import java.lang.*;
-import java.lang.reflect.*;
-
 
 
 @Path( PeerServiceA.webContextPath )
@@ -43,7 +32,7 @@ public class PeerServiceA
    public String routing(@QueryParam("x") double x, @QueryParam("y") double y)
    {
 	 //tmpPeer.checkZone(x, y);
-	 return PeerServer.testPeer.checkZone(0.6d, 0.4d);	 
+	 return PeerServer.testPeer.checkZone(0.8d, 0.4d);	 
 	  
    }
 

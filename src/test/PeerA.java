@@ -1,9 +1,7 @@
 package test;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-import java.io.IOException;
-import java.net.URI;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,20 +9,16 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import javax.ws.rs.client.*;
+
 import javax.ws.rs.core.MediaType;
 
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
 
-import com.sun.xml.internal.bind.v2.runtime.Coordinator;
 
 public class PeerA {
 	//Variablen
 	public  static final int port = 4434;
 	// Aktuelle IP-Adresse des Servers
-	public  static final String ip_adresse = "192.168.2.109";
+	public  static final String ip_adresse = "10.9.41.243";
 	
 	private  Zone ownZone;
 	private  HashMap neighbours = new HashMap();
@@ -41,11 +35,11 @@ public class PeerA {
 	
     public  void splitZone(PeerA newPeer) {
         if (ownZone.isSquare()) {
-            newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
-            ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
+            newPeer.createZone(new Point2D.Double(ownZone.calculateCenterPoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
+            ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCenterPoint().getX(), ownZone.getUpperLeft().getY()));    
         } else {
-            newPeer.createZone(ownZone.getBottomLeft(), (new Point2D.Double(ownZone.getBottomRight().getX(), ownZone.calculateCentrePoint().getY())));
-            ownZone.setZone(new Point2D.Double(ownZone.getUpperLeft().getX(), ownZone.calculateCentrePoint().getY()), ownZone.getUpperRight());    
+            newPeer.createZone(ownZone.getBottomLeft(), (new Point2D.Double(ownZone.getBottomRight().getX(), ownZone.calculateCenterPoint().getY())));
+            ownZone.setZone(new Point2D.Double(ownZone.getUpperLeft().getX(), ownZone.calculateCenterPoint().getY()), ownZone.getUpperRight());    
         }
     }
 
@@ -67,24 +61,31 @@ public class PeerA {
 	//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
 		
 		String ausgabe_ip ="";
-
- 		
+		String webContextPath="routing";
+		String baseUrl = "";
+		double smalest_square=0d;
+		
+		double tmp_square;
+		tmp_square = ownZone.distanz(ownZone.center.getX(), ownZone.center.getY(), x, y);
+	
+		
 		if(x >= ownZone.bottomLeft.getX() && x <= ownZone.bottomRight.getX() && y >= ownZone.bottomRight.getY() && y <= ownZone.upperRight.getY()) {
 		 return ip_adresse;
 		}
 		else
 		{
-			
-			for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
-				
-				if(x >= entry.getValue().bottomLeft.getX() && x <= entry.getValue().bottomRight.getX()) {
 	
-			      String webContextPath = "routing";
-			      String baseUrl ="http://"+ longToIp(entry.getKey())+":4434/start/";
-			     // String baseUrl        = "http://"+ip_adresse+":"+port;
-			      
-			      System.out.println( "\nAngefragte URL: " + baseUrl + webContextPath + "?x=" + x + "&y=" + y );
-
+			for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
+				smalest_square = ownZone.distanz(entry.getValue().center.getX(), entry.getValue().center.getY(), x, y);
+				if(smalest_square < tmp_square) {
+					tmp_square = smalest_square;
+					baseUrl ="http://"+ longToIp(entry.getKey())+":4434/start/";
+				     // String baseUrl        = "http://"+ip_adresse+":"+port;
+				}
+			}
+				
+				
+				
 			      Client c = ClientBuilder.newClient();
 			      WebTarget  target = c.target( baseUrl );
 			      
@@ -94,10 +95,10 @@ public class PeerA {
 			      ausgabe_ip = (target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
 			      System.out.println( target.path( webContextPath ));
 			      
-				}
+				
 				
 			}
-		}
+		
 		return ausgabe_ip;
 	}
 	

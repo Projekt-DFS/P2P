@@ -6,7 +6,7 @@ package test;
 import java.awt.geom.Point2D;
 
 public class Zone {
-    public Point2D.Double bottomLeft, bottomRight, upperLeft, upperRight;
+    public Point2D.Double bottomLeft, bottomRight, upperLeft, upperRight, center;
     
     public Zone() {
     
@@ -17,6 +17,7 @@ public class Zone {
     	this.bottomRight = bottomRight;
     	this.upperLeft = upperLeft;
     	this.upperRight = upperRight;
+    	this.center = calculateCenterPoint();
     }
     
     public void setZone(Point2D.Double bottomLeft, Point2D.Double upperRight) {
@@ -30,11 +31,11 @@ public class Zone {
         bottomRight = new Point2D.Double(upperRight.getX(), bottomLeft.getY());
     }
     
-    public Point2D.Double calculateCentrePoint() {
-        return new Point2D.Double((bottomRight.getX() - bottomLeft.getX()) / 2, (upperRight.getY() - bottomRight.getY()) / 2);
+    public Point2D.Double calculateCenterPoint() {
+        return new Point2D.Double(((bottomRight.getX() - bottomLeft.getX()) / 2) + bottomLeft.getX(), ((upperRight.getY() - bottomRight.getY()) / 2) + bottomLeft.getY());
     }
     
-    public Point2D.Double calculateCentrePoint(Zone tmpZone) {
+    public Point2D.Double calculateCenterPoint(Zone tmpZone) {
         return new Point2D.Double((tmpZone.bottomRight.getX() - tmpZone.bottomLeft.getX()) / 2, (tmpZone.upperRight.getY() - tmpZone.bottomRight.getY()) / 2);
     }
     
@@ -47,6 +48,12 @@ public class Zone {
     
     public double getWidth() {
         return bottomRight.getX() - bottomLeft.getX(); 
+    }
+    public void setcenter(Point2D.Double center) {
+    	this.center = center;
+    }
+    public Point2D.Double getCenter(){
+    	return center;
     }
     
     public double getZoneVolume() {

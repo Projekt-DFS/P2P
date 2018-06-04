@@ -2,16 +2,6 @@ package test;
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
-import javax.ws.rs.client.*;
-import javax.ws.rs.core.MediaType;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -49,7 +39,7 @@ public class PeerServer {
 		  testPeer.createCoordinates(testPeer.ipToLong("192.168.2.113"), zoneE);
 	    *    
 	    */
-		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.109"), zoneB);
+		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.110"), zoneB);
 		testPeer.createCoordinates(testPeer.ipToLong("192.168.2.111"), zoneC);
 	    
 		String baseUrl ="http://"+ PeerA.ip_adresse+":"+PeerA.port;
