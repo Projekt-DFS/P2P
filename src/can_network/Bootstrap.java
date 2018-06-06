@@ -283,15 +283,38 @@ public class Bootstrap extends Peer {
 		return ic;
 	}
 	
+	/**
+	 * Generates Point with x and y between 0.0 and 1.0
+	 * @param imageName
+	 * @param userName
+	 * @return coordinatePoint
+	 */
+	
 	public Point2D.Double hashToPoint(String imageName, String userName) {
 		final double multiplier = 1.0 / 2147483648.0;
 		
-		double x = imageName.hashCode() * multiplier;
-		double y = userName.hashCode() * multiplier;
+		String xPointHashString, yPointHashString;
+		xPointHashString = imageName + userName;
+		yPointHashString = userName + imageName;
 		
+		Double x, y;
+		
+		if (xPointHashString.hashCode() < 0.0) {
+			x = xPointHashString.hashCode() * multiplier * (-1.0);
+		} else {
+			x = xPointHashString.hashCode() * multiplier;
+		}
+		
+		if (yPointHashString.hashCode() < 0.0) {
+			y = yPointHashString.hashCode() * multiplier * (-1.0);
+		} else {
+			y = yPointHashString.hashCode() * multiplier;
+		}
+	
 		Point2D.Double coordinatePoint = new Point2D.Double(x, y);
 		
 		return coordinatePoint;
 	}
+
 
 }
