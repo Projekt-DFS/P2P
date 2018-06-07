@@ -15,12 +15,20 @@ import java.util.*;
 
 import javax.imageio.ImageIO;
 
+import test.Zone;
+
 public class Bootstrap extends Peer {
 
 	//Variables
 	private LinkedList<User> userList;
 	//TODO ID von IP-Adresse ableiten
 	//private Zone initialZone;
+	
+	/**
+	 * HashMap: Speichert die Nachbarn vom Peer mit zugehöhrigen Zonen
+	 * 
+	 */
+	private  HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
 
 	/**
 	 * Constructor
@@ -314,6 +322,11 @@ public class Bootstrap extends Peer {
 		Point2D.Double coordinatePoint = new Point2D.Double(x, y);
 		
 		return coordinatePoint;
+	}
+	
+	public HashMap<Long, Zone> getRoutingTbl () {
+		return coordinates;
+		
 	}
 
 

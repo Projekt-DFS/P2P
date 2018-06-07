@@ -1,18 +1,25 @@
 package can_network;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URI;
-
+import java.net.UnknownHostException;
 import java.awt.geom.Point2D;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 
 import java.util.ArrayList;
 
 
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
+
+
+
 
 //import can.Peer;
 
@@ -28,14 +35,14 @@ public class Peer {
 	
 	//Variablen
 	private Zone ownZone;
-	private static final int port = 4434;					//TODO temporary
+	public static final int port = 4434;					//TODO temporary
 	// Aktuelle IP-Adresse des Servers
 
-	private  static final String ip_adresse = "127.0.0.1";
+	public  static String ip_adresse;
+	InetAddress inet;
 	
-	
-	HashMap neighbours = new HashMap();
-	HashMap coordinates = new HashMap();
+	private  HashMap neighbours = new HashMap();
+	private  HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
     
 
 
@@ -51,7 +58,29 @@ public class Peer {
 	 * @param oldPeer
 	 */
 	public Peer(Peer oldPeer) {
+		try {
+			this.inet = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		oldPeer.splitZone(this);
+		
+	}
+	
+	//Constructor
+	public Peer(Zone tmpZone) {
+			this.ownZone = tmpZone;
+			
+		 try {
+			this.inet = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 System.out.println(inet.getHostAddress());
+		//ip_adresse = this.inet.toString();
+			
 		
 	}
 
@@ -60,10 +89,77 @@ public class Peer {
 		
 	}
 	
+	/**
+	 * 
+	 * @return the local ip-adress of the peer
+	 */
+	public String getIP() {
+		return inet.getHostAddress();
+	}
+	
 	public void createNeighbours() {
 
 	}
 	
+	/**
+	 * Put values in the Hashmap coordinates
+	 * @param key IP-Adresse from the a neighbor of the peer
+	 * @param zone zone-responsibility of the neighbor
+	 */
+	public void createCoordinates(Long key, Zone zone) {
+		coordinates.put(key, zone);
+	}
+	
+	
+	/**
+	 * Routing-algorithmus
+	 * @param x Koordinate des gesuchten Punktes
+	 * @param y Koordinate des gesuchten Punktes
+	 * @return IP-Adresse vom zonen-verantwortlichen Peer
+	 */
+	public  String checkZone (double x, double y) {
+		//	if(tmpZone.bottomLeft.getX() >= ownZone.bottomLeft.getX() && tmpZone.bottomRight.getX() <= ownZone.bottomRight.getX() && tmpZone.bottomRight.getY() >= ownZone.bottomRight.getY() && tmpZone.upperRight.getY() <= ownZone.upperRight.getY()) {
+			
+			String ausgabe_ip ="";
+			String webContextPath="routing";
+			String baseUrl = "";
+			double smalest_square=0d;
+			
+			double tmp_square;
+			tmp_square = ownZone.distanz(ownZone.getCenter().getX(), ownZone.getCenter().getY(), x, y);
+		
+			
+			if(x >= ownZone.getBottomLeft().getX() && x <= ownZone.getBottomRight().getX() && y >= ownZone.getBottomRight().getY() && y <= ownZone.getUpperRight().getY()) {
+			 return ip_adresse;
+			}
+			else
+			{
+		
+				for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
+					smalest_square = ownZone.distanz(entry.getValue().getCenter().getX(), entry.getValue().getCenter().getY(), x, y);
+					if(smalest_square < tmp_square) {
+						tmp_square = smalest_square;
+						baseUrl ="http://"+ longToIp(entry.getKey())+":4434/start/";
+					     // String baseUrl        = "http://"+ip_adresse+":"+port;
+					}
+				}
+
+				      Client c = ClientBuilder.newClient();
+				      WebTarget  target = c.target( baseUrl );
+
+				      ausgabe_ip = (target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
+				      System.out.println( target.path( webContextPath ));
+		
+				}
+			
+			return ausgabe_ip;
+		}
+	
+	/**
+	 * Convert a IP-Address(String) to long
+	 * @param i IP-Address as String 
+	 * @return IP-Adress as long
+	 */	
 	public long ipToLong(String ipAddress) {
 
 		// ipAddressInArray[0] = 192
@@ -88,45 +184,16 @@ public class Peer {
 	}
 		
 	
-		public String longToIp(long i) {
-
-			return ((i >> 24) & 0xFF) + 
-	                   "." + ((i >> 16) & 0xFF) + 
-	                   "." + ((i >> 8) & 0xFF) + 
-	                   "." + (i & 0xFF);
-
-		}
+	/**
+	 * Convert a IP-Address(Long) to String
+	 * @param i IP-Address as Long 
+	 * @return IP-Adress as String
+	 */
+	public String longToIp(long i) {
+		return ((i >> 24) & 0xFF) + "." + ((i >> 16) & 0xFF) + "." + ((i >> 8) & 0xFF) + "." + (i & 0xFF);
+	}
 		
 
-	/**
-	 * TODO Temporary Main function
-	 * Starts a dummy REST
-	 * @param args
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-   public static void main( String[] args ) throws IOException, InterruptedException {
-      String baseUrl = ( args.length > 0 ) ? args[0] : "http://"+ip_adresse+":"+port;
-     
-      final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(
-            URI.create( baseUrl ), new ResourceConfig( PeerService.class ), false );
-      Runtime.getRuntime().addShutdownHook( new Thread( new Runnable() {
-    	  @Override
-    	  public void run() {
-    		  server.shutdownNow();
-    	  }
-         } ) );
-      server.start();
-	
-	  System.out.println( String.format( "\nGrizzly-HTTP-Server gestartet mit der URL: %s\n"
-	                                     + "Stoppen des Grizzly-HTTP-Servers mit:      Strg+C\n",
-	                                     baseUrl + PeerService.webContextPath ) );
-	
-	  Thread.currentThread().join();;
-	  
-   }	
-   
-   
    
    //Zone functions
    
@@ -146,6 +213,7 @@ public class Peer {
     */
     public Peer splitZone(Peer newPeer) {
         if (ownZone.isSquare()) {
+        
             newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
             ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
         } else {
