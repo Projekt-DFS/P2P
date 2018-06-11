@@ -35,14 +35,16 @@ public class Peer {
 	
 	//Variablen
 	private Zone ownZone;
-	public static final int port = 4434;					//TODO temporary
+	public static final int port = 4434;
+	public static final String ip_bootstrap = "192.168.2.109";
+	//TODO temporary
 	// Aktuelle IP-Adresse des Servers
 
 	public  static String ip_adresse;
 	InetAddress inet;
 	
 	private  HashMap neighbours = new HashMap();
-	private  HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
+	private static HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
     
 
 
@@ -51,7 +53,21 @@ public class Peer {
 	protected int id;										//TODO useful? for Neighbourlist
 
 	
-	
+	//Constructor
+		public Peer(Zone tmpZone) {
+				this.ownZone = tmpZone;
+				
+			 try {
+				this.inet = InetAddress.getLocalHost();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 System.out.println(inet.getHostAddress());
+			//ip_adresse = this.inet.toString();
+				
+			
+		}
 	//Constructor
 	/**
 	 * Creates a new Peer in oldPeer's Zone
@@ -68,21 +84,7 @@ public class Peer {
 		
 	}
 	
-	//Constructor
-	public Peer(Zone tmpZone) {
-			this.ownZone = tmpZone;
-			
-		 try {
-			this.inet = InetAddress.getLocalHost();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 System.out.println(inet.getHostAddress());
-		//ip_adresse = this.inet.toString();
-			
-		
-	}
+	
 
 	public Peer() {
 			
@@ -154,6 +156,8 @@ public class Peer {
 			
 			return ausgabe_ip;
 		}
+	
+
 	
 	/**
 	 * Convert a IP-Address(String) to long
@@ -276,6 +280,22 @@ public class Peer {
     	
     	
     }
+    
+	/**
+	 * Send a request to Bootstrap to join a new Peer
+	 * @param newPeer peer-object of the new Peer
+	 */
+	public static void join(Peer newPeer) {
+		String webContextPath="getroutingTbl";
+		Client c = ClientBuilder.newClient();
+		String baseUrl = "http://"+ ip_bootstrap+":4434/start/getroutingTbl";
+		WebTarget  target = c.target( baseUrl );
+		coordinates = (target.path(webContextPath).request().get(HashMap.class));
+/*
+	    ausgabe_ip = (target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( String.class ));
+	    System.out.println( target.path( webContextPath ));
+	*/	
+	}
    
 
 }

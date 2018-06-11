@@ -15,7 +15,7 @@ import java.util.*;
 
 import javax.imageio.ImageIO;
 
-import test.Zone;
+
 
 public class Bootstrap extends Peer {
 
@@ -47,7 +47,7 @@ public class Bootstrap extends Peer {
 		 * 
 		 * 
 		 */
-		
+	
 		//Create or load UserList
 		userList = new LinkedList<User>();
 		try {
@@ -61,6 +61,9 @@ public class Bootstrap extends Peer {
 		//Create a new Zone
 		createZone(new Point2D.Double(0.0, 0.0), new Point2D.Double(1.0, 1.0));
 		id = 0;					//Bootstrap has always ID 0 TODO: Deprecated
+	}
+	public Bootstrap(Zone tmpZone) {
+		super(tmpZone);
 	}
 
 	/**
@@ -324,10 +327,15 @@ public class Bootstrap extends Peer {
 		return coordinatePoint;
 	}
 	
+	/**
+	 *  The sends coordinates Hashmap of the Bootstrap
+	 * @return coordinates
+	 */
 	public HashMap<Long, Zone> getRoutingTbl () {
 		return coordinates;
 		
 	}
+
 
 
 }

@@ -7,6 +7,8 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 
@@ -16,6 +18,7 @@ import javax.ws.rs.core.StreamingOutput;
 public class PeerService
 {
 	 public Peer tmpPeer;
+	 public Bootstrap tmpBootstrap;
 	  
 	   PeerServer tmpServer;
 	   static final String webContextPath = "/start";
@@ -41,11 +44,28 @@ public class PeerService
 		 return PeerServer.testPeer.checkZone(0.4d, 0.6d);	 
 		  
 	   }
-
+	  @GET
+	  @Path("/getroutingTbl")
+	  public HashMap <Long, Zone> getrouting() {
+		  return tmpBootstrap.getRoutingTbl();
+	  }
+	  
+	  /**
+	   *  Konstruktor für Bootstrap
+	   * @param tmpZone
+	   */
 	  public PeerService(Zone tmpZone) {
+		  tmpBootstrap = new Bootstrap(tmpZone);
+	  }
+	  
+	  /**
+	   * Konnstruktor für Peers
+	   * @param tmpZone
+	   */
+	 /* public PeerService(Zone tmpZone) {
 		   	tmpPeer = new Peer(tmpZone); 
 		 
-	  }
+	  }*/
 	  public PeerService() {
 		  
 	  }
