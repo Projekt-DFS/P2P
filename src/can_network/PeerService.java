@@ -49,6 +49,12 @@ public class PeerService
 	  public HashMap <Long, Zone> getrouting() {
 		  return tmpBootstrap.getRoutingTbl();
 	  }
+	  @GET
+	  @Path("/joinPeers")
+	  public Peer joinPeer(@QueryParam("x") double x, @QueryParam("y") double y)
+	  {
+		  return PeerServer.testPeer.joinRequest(x, y);
+	  }
 	  
 	  /**
 	   *  Konstruktor für Bootstrap

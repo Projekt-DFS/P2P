@@ -296,6 +296,46 @@ public class Peer {
 	    System.out.println( target.path( webContextPath ));
 	*/	
 	}
+	
+	/**
+	 * Check if the peer can split his zone with the new peer
+	 * @param x Coordinate in the Zone
+	 * @param y Coordinate in the Zone
+	 */
+	 
+	public Peer joinRequest(double x, double y) {
+		if(x >= ownZone.getBottomLeft().getX() && x <= ownZone.getBottomRight().getX() && y >= ownZone.getBottomRight().getY() && y <= ownZone.getUpperRight().getY()) {
+			Peer newPeer = new Peer();
+			newPeer = splitZone(newPeer);
+			return newPeer;
+		} else {
+			
+			String baseUrl ="";
+			String webContextPath="joinPeers";
+			double smalest_square=0d;			
+			double tmp_square;
+			
+			tmp_square = ownZone.distanz(ownZone.getCenter().getX(), ownZone.getCenter().getY(), x, y);
+			for(Map.Entry<Long, Zone> entry : coordinates.entrySet()) {
+				smalest_square = ownZone.distanz(entry.getValue().getCenter().getX(), entry.getValue().getCenter().getY(), x, y);
+				if(smalest_square < tmp_square) {
+					tmp_square = smalest_square;
+					baseUrl ="http://"+ longToIp(entry.getKey())+":4434/start/";
+				     // String baseUrl        = "http://"+ip_adresse+":"+port;
+				}
+			}
+
+			      Client c = ClientBuilder.newClient();
+			      WebTarget  target = c.target( baseUrl );
+
+			      return (target.path(webContextPath).queryParam("x",x).queryParam("y", y).request( MediaType.TEXT_PLAIN ).get( Peer.class ));
+			     
+	
+			}
+			
+		}
+		
+	
    
 
 }
