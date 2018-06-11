@@ -178,10 +178,14 @@ public class Bootstrap extends Peer {
 	
 	
 	
+	
+	
+	
 	//Image functions iOS -> Bootstrap
 	/**
 	 * Creates an ImageContainer and sends it into the network
 	 * @param ic the ImageContainer to be saved
+	 * TODO: temporary
 	 */
 	public void createImageContainer(ImageContainer ic) {
 		try {
