@@ -15,6 +15,7 @@ import java.awt.Image;
 public class ImageContainer implements Serializable {
 
 	private static final long serialVersionUID = 4903375720434123881L;	//TODO was ist das?
+	//Liste mit keys von Bildern
 	
 	//Variables
 	transient private BufferedImage img;

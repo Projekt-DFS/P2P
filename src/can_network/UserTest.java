@@ -33,7 +33,7 @@ public class UserTest {
 	
 	@Test
 	public void testAuthenticate() {
-		System.out.println(bt.getAllUsers());
+		assertEquals(1, bt.getUser("Thomas").getID());
 		assertEquals(true, bt.authenticateUser("Tommi", "TS"));
 		assertEquals(false, bt.authenticateUser("Thomas", "Pw"));
 		assertEquals(true, bt.authenticateUser("Thomas", "pw"));
@@ -51,10 +51,11 @@ public class UserTest {
 	@Test
 	public void testDelete() {
 		bt.deleteUser("Thomas");
+		System.out.println(bt.getUserCount());
 		assertEquals(1, bt.getUserCount());
 		
-		bt.deleteUser("Thomi");
-		assertEquals(1, bt.getUserCount());
+		bt.deleteUser("Tommi");
+		assertEquals(0, bt.getUserCount());
 	}
 	
 }

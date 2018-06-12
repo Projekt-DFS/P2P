@@ -32,7 +32,7 @@ public class PlayGround {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		//new PlayGround().startBootstrapTest();
-		//new PlayGround().startUserTest();
+		new PlayGround().startUserTest();
 		new PlayGround().startImageTest();
 		//new PlayGround().startCanTest();
 	}
@@ -61,7 +61,7 @@ public class PlayGround {
 			img = ImageIO.read(new File("Classdiagramm.jpg"));
 			Point2D.Double coordinate = new Point2D.Double(0.5,0.8);
 			String photographer = "Knecht";
-			User owner = new User("user1", "pw");
+			User owner = new User(1,"user1", "pw");
 			Date date = new Date();
 			LinkedList<String> tagList = new LinkedList<String>();
 			bt.createImageContainer(img, coordinate, photographer, owner, date, tagList);
@@ -76,7 +76,7 @@ public class PlayGround {
 		ImageContainer ic;
 		bt = new Bootstrap();
 		Point2D.Double coordinate = new Point2D.Double(0.5, 0.8);
-		User owner = new User("user1", "pw");
+		User owner = new User(1,"user1", "pw");
 		
 		try {
 			ic = bt.loadImageContainer(owner, coordinate);
