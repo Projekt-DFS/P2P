@@ -181,22 +181,26 @@ public class Bootstrap extends Peer {
 	}
 
 
-
-	//TODO implement hashFunction
-	public void createImageCalculatingCoordinate(BufferedImage img, String photographer, 
-			User user, Date date, LinkedList<String> tagList) {
-
-	}
-
-
-	//Image functions
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Image functions iOS -> Bootstrap
 	/**
 	 * Creates an ImageContainer and sends it into the network
 	 * @param ic the ImageContainer to be saved
+	 * TODO: temporary
 	 */
-	public void createImage(ImageContainer ic) {
+	public void createImageContainer(ImageContainer ic) {
 		try {
-			saveImage(ic);						//TODO: temporary
+			saveImageContainer(ic);						//TODO: temporary -> forward to peer
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -212,13 +216,13 @@ public class Bootstrap extends Peer {
 	 * @param date the date when the image was shot
 	 * @param tagList a list of tags
 	 */
-	public void createImage(BufferedImage img, Point2D.Double canCoordinate,
+	public void createImageContainer(BufferedImage img, Point2D.Double canCoordinate,
 			String photographer, User user, Date date, LinkedList<String> tagList) {
 		//Koordinate jetzt erst berechnen?
 		ImageContainer ic = new ImageContainer(img, canCoordinate, photographer, user, date, tagList);
 		//TODO Weiterleiten an die peers
 		try {
-			saveImage(ic);						//TODO: temporary (routing)
+			saveImageContainer(ic);						//TODO: temporary (routing)
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -234,31 +238,51 @@ public class Bootstrap extends Peer {
 	}
 
 	/**
+	 * Sends the ImageContainer object
+	 * @param ic
+	 */
+	public void sendImage(ImageContainer ic) {
+		//TODO implement
+	}
+	
+	/**
+	 * Sends the ImageContainer's metadata
+	 * @param ic
+	 */
+	public void sendMeta(ImageContainer ic) {
+		//TODO implement
+	}
+	
+
+	
+	
+	
+	
+	//Image functions P2P
+	
+	/**
 	 * Saves an ImageContainer including the image and the thumbnail on the hdd
 	 * @param ic the imageContainer to be saved
 	 */
-	public void saveImage(ImageContainer ic) throws IOException {
-		//Get location
-		StringBuffer fileName = new StringBuffer();
-		fileName.append("Images//").append(ic.getUser().getName()).append("_")
-				.append(utils.StaticFunctions.pointToString(ic.getCoordinate()));
+	public void saveImageContainer(ImageContainer ic) throws IOException {
 		
 		//Save imageContainer
+		System.out.println(ic.getImgPath() + ".data");
 		ObjectOutputStream out = new ObjectOutputStream(
 				new BufferedOutputStream(
-						new FileOutputStream(fileName.toString() + ".data")));
+						new FileOutputStream(ic.getImgPath() + ".data")));
 		out.writeObject(ic);
 		out.close();
 		
 		//Save image
-		File outputFile = new File(fileName.toString() + ".jpg");
+		File outputFile = new File(ic.getImgPath() + ".jpg");
 		ImageIO.write(ic.getImage(), "jpg", outputFile);
 		
 		//Save thumbnail
-		outputFile = new File(fileName.toString() + "_thumbnail.jpg");
-		ImageIO.write(ic.getThumbnail(), "jpg", outputFile);
+		outputFile = new File(ic.getImgPath() + "_thumbnail.jpg");
+		ImageIO.write(ic.getThumbnail(), "jpg", outputFile);	
 	}
-
+	
 	/**
 	 * Deserialize imageContainer  
 	 * @param canCoordinate
@@ -266,7 +290,8 @@ public class Bootstrap extends Peer {
 	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException 
 	 */
-	public ImageContainer getImage(User user, Point2D.Double canCoordinate) throws FileNotFoundException, IOException, ClassNotFoundException {
+public ImageContainer loadImageContainer(User user, Point2D.Double canCoordinate) throws FileNotFoundException, IOException, ClassNotFoundException {
+		
 		//Get location
 		StringBuffer fileName = new StringBuffer();
 		fileName.append("Images//").append(user.getName()).append("_")
@@ -276,12 +301,6 @@ public class Bootstrap extends Peer {
 		File inputFile = new File(fileName.toString() + ".jpg");
 		BufferedImage img = ImageIO.read(inputFile);
 		
-		/* Thumbnails will be genereated in IC-Class
-		//Load thumbnail
-		inputFile = new File(fileName.toString() + "_thumbnail.jpg");
-		BufferedImage thumbnail = ImageIO.read(inputFile);
-		*/
-		
 		//Load imageContainer and set image and thumbnail 
 		ImageContainer ic;
 		ObjectInputStream in= new ObjectInputStream(
@@ -289,9 +308,9 @@ public class Bootstrap extends Peer {
 						new FileInputStream(fileName.toString() + ".data")));
 		ic= (ImageContainer)in.readObject();
 		ic.setImage(img);
-		//ic.createThumbnail(thumbnail);
 		in.close();
 		return ic;
+		
 	}
 	
 	/**
@@ -300,7 +319,6 @@ public class Bootstrap extends Peer {
 	 * @param userName
 	 * @return coordinatePoint
 	 */
-	
 	public Point2D.Double hashToPoint(String imageName, String userName) {
 		final double multiplier = 1.0 / 2147483648.0;
 		

@@ -34,10 +34,15 @@ public class PlayGround {
 		//new PlayGround().startBootstrapTest();
 		//new PlayGround().startUserTest();
 		new PlayGround().startImageTest();
-
+		//new PlayGround().startCanTest();
 	}
 	
 	
+	private void startCanTest() {
+		bt = new Bootstrap();
+		Peer p1 = new Peer(bt);
+		System.out.println(p1.toStringZone());
+	}
 	
 	
 	
@@ -53,13 +58,13 @@ public class PlayGround {
 		BufferedImage img;
 		try {
 			
-			img = ImageIO.read(new File("img.jpg"));
+			img = ImageIO.read(new File("Classdiagramm.jpg"));
 			Point2D.Double coordinate = new Point2D.Double(0.5,0.8);
 			String photographer = "Knecht";
 			User owner = new User("user1", "pw");
 			Date date = new Date();
 			LinkedList<String> tagList = new LinkedList<String>();
-			bt.createImage(img, coordinate, photographer, owner, date, tagList);
+			bt.createImageContainer(img, coordinate, photographer, owner, date, tagList);
 			//bt.createImage(ic);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -74,7 +79,7 @@ public class PlayGround {
 		User owner = new User("user1", "pw");
 		
 		try {
-			ic = bt.getImage(owner, coordinate);
+			ic = bt.loadImageContainer(owner, coordinate);
 			System.out.println(ic.getPhotographer());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

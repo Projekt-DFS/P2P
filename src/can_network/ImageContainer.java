@@ -15,9 +15,13 @@ import java.awt.Image;
 public class ImageContainer implements Serializable {
 
 	private static final long serialVersionUID = 4903375720434123881L;	//TODO was ist das?
+	
 	//Variables
 	transient private BufferedImage img;
 	transient private BufferedImage thumbnail;
+	private String fileName;
+	private String imgPath;
+	private String thumbnailPath;
 	private Point2D.Double canCoordinate;
 	
 	
@@ -39,7 +43,7 @@ public class ImageContainer implements Serializable {
 			String photographer, User user, Date date, LinkedList<String> tagList) {
 		
 		setImage(img);
-		
+		setFileName(fileName);
 		setCoordinate(canCoordinate);
 		
 		tagList = new LinkedList<String>();
@@ -47,6 +51,7 @@ public class ImageContainer implements Serializable {
 		setUser(user);
 		setDate(date);
 		setTagList(tagList);
+		setPath();
 		
 	}
 
@@ -61,8 +66,20 @@ public class ImageContainer implements Serializable {
 		return thumbnail;
 	}
 	
+	public String getFileName() {
+		return fileName;
+	}
+	
 	public Point2D.Double getCoordinate() {
 		return canCoordinate;
+	}
+	
+	public String getImgPath() {
+		return imgPath;
+	}
+	
+	public String getThumbnailPath() {
+		return thumbnailPath;
 	}
 	
 	// get-methods meta
@@ -93,6 +110,10 @@ public class ImageContainer implements Serializable {
 		}
 	}
 	
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
 	public void setCoordinate(Point2D.Double canCoordinate) {
 		if (canCoordinate.x > 1.0 || canCoordinate.y > 1.0 || canCoordinate.x < 0.0 || canCoordinate.y < 0.0) {
 			throw new IllegalArgumentException("Bad Coordinate");
@@ -100,6 +121,14 @@ public class ImageContainer implements Serializable {
 			this.canCoordinate= canCoordinate;
 		}
 		
+	}
+	
+	public void setPath() {
+		StringBuffer fileName = new StringBuffer();
+		fileName.append("Images//").append(user.getName()).append("_")
+				.append(utils.StaticFunctions.pointToString(canCoordinate));
+		this.imgPath = fileName.toString();// + ".jpg";
+		this.thumbnailPath = fileName.toString() + "_thumbnail.jpg";
 	}
 	
 	//set-methods meta
@@ -176,7 +205,7 @@ public class ImageContainer implements Serializable {
 	}
 
 
-	//Thumpnails
+	//Thumbnails
 	/**
 	 * creates a Thumbnail and saves it in this object
 	 * @param img the original image
