@@ -20,15 +20,16 @@ public class ImageContainer implements Serializable {
 	//Variables
 	transient private BufferedImage img;
 	transient private BufferedImage thumbnail;
-	private String fileName;
-	private String imgPath;
-	private String thumbnailPath;
-	private Point2D.Double canCoordinate;
+	
+	private String imageName;
+	private String path;
+	private Point2D.Double coordinate;
 	
 	
 	//Meta-Data
 	private String photographer;
 	private User user;
+	private String username;
 	private Date date;
 	//private Ort location;
 	private LinkedList<String> tagList;
@@ -40,22 +41,22 @@ public class ImageContainer implements Serializable {
 	 * Constructor
 	 * Sets image object
 	 */
-	public ImageContainer(BufferedImage img, Point2D.Double canCoordinate,
-			String photographer, User user, Date date, LinkedList<String> tagList) {
+	public ImageContainer(BufferedImage img, String username, String imageName, 
+			String photographer, Date date, LinkedList<String> tagList) {
 		
 		setImage(img);
-		setFileName(fileName);
-		setCoordinate(canCoordinate);
+		setFileName(imageName);
+		//TODO Calculate Coordinate
+		setCoordinate();
 		
 		tagList = new LinkedList<String>();
 		setPhotographer(photographer);
-		setUser(user);
+		setUsername(username);
 		setDate(date);
 		setTagList(tagList);
 		setPath();
 		
 	}
-
 	
 	
 	// get-methods
@@ -67,20 +68,22 @@ public class ImageContainer implements Serializable {
 		return thumbnail;
 	}
 	
-	public String getFileName() {
-		return fileName;
+	public String getImageName() {
+		return imageName;
 	}
 	
 	public Point2D.Double getCoordinate() {
-		return canCoordinate;
+		return coordinate;
 	}
 	
-	public String getImgPath() {
-		return imgPath;
+	public String getPath() {
+		//TODO
+		return path;
 	}
 	
 	public String getThumbnailPath() {
-		return thumbnailPath;
+		//TODO
+		return path;
 	}
 	
 	// get-methods meta
@@ -91,6 +94,11 @@ public class ImageContainer implements Serializable {
 	public User getUser() {
 		return user;
 	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
 		
 	public Date getDate() {
 		return date;
@@ -111,25 +119,25 @@ public class ImageContainer implements Serializable {
 		}
 	}
 	
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFileName(String imageName) {
+		this.imageName = imageName;
 	}
 	
-	public void setCoordinate(Point2D.Double canCoordinate) {
-		if (canCoordinate.x > 1.0 || canCoordinate.y > 1.0 || canCoordinate.x < 0.0 || canCoordinate.y < 0.0) {
-			throw new IllegalArgumentException("Bad Coordinate");
-		} else {
-			this.canCoordinate= canCoordinate;
-		}
+	public void setCoordinate() {
+		coordinate = utils.StaticFunctions.hashToPoint(username, imageName);
 		
 	}
 	
 	public void setPath() {
 		StringBuffer fileName = new StringBuffer();
-		fileName.append("Images//").append(user.getName()).append("_")
-				.append(utils.StaticFunctions.pointToString(canCoordinate));
-		this.imgPath = fileName.toString();// + ".jpg";
-		this.thumbnailPath = fileName.toString() + "_thumbnail.jpg";
+		/*fileName.append("images//").append(user.getName()).append("_")
+				.append(utils.StaticFunctions.pointToString(coordinate));*/
+		fileName.append("images/").append(username).append(",")
+		.append(imageName);
+		
+		
+		this.path = fileName.toString();// + ".jpg";
+		//this.thumbnailPath = fileName.toString() + "_thumbnail.jpg";
 	}
 	
 	//set-methods meta
@@ -139,6 +147,10 @@ public class ImageContainer implements Serializable {
 	
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public void setDate(Date date) {
