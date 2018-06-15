@@ -92,6 +92,7 @@ public class Bootstrap extends Peer {
 				return user;
 			}
 		}
+		
 		throw new IllegalArgumentException("User does not exist");
 	}
 	
@@ -366,8 +367,14 @@ public class Bootstrap extends Peer {
 		File folder = new File("images");
 		
 		if(!folder.exists()) {
-			//TODO create "images" folder
+			folder.mkdir();
 		}
+		
+		File userFolder = new File("images//" + ic.getUsername());
+		if(!userFolder.exists()) {
+			userFolder.mkdir();
+		}
+		
 		
 		ObjectOutputStream out = new ObjectOutputStream(
 				new BufferedOutputStream(
@@ -393,8 +400,7 @@ public class Bootstrap extends Peer {
 	 * @throws ClassNotFoundException 
 	 */
 	public ImageContainer loadImageContainer(String username, String imageName) throws FileNotFoundException, IOException, ClassNotFoundException {
-		
-		//TODO calculate coordinates
+		//TODO routing
 		Point2D.Double coordinate = utils.StaticFunctions.hashToPoint(username, imageName);
 		
 		//Get location

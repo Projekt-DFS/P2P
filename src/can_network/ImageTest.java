@@ -43,7 +43,7 @@ public class ImageTest {
 		
 		img = ImageIO.read(new File("Test.jpg"));
 		photographer = "Knecht";
-		owner = new User(1,"Testuser2", "pw");
+		owner = new User(2,"Testuser2", "pw");
 		date = new Date();
 		tagList = new LinkedList<String>();
 		tagList.add("Winter2018");

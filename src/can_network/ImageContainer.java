@@ -46,7 +46,6 @@ public class ImageContainer implements Serializable {
 		
 		setImage(img);
 		setFileName(imageName);
-		//TODO Calculate Coordinate
 		setCoordinate();
 		
 		tagList = new LinkedList<String>();
@@ -130,14 +129,11 @@ public class ImageContainer implements Serializable {
 	
 	public void setPath() {
 		StringBuffer fileName = new StringBuffer();
-		/*fileName.append("images//").append(user.getName()).append("_")
-				.append(utils.StaticFunctions.pointToString(coordinate));*/
-		fileName.append("images/").append(username).append(",")
+		fileName.append("images/").append(username).append("//")
 		.append(imageName);
 		
 		
-		this.path = fileName.toString();// + ".jpg";
-		//this.thumbnailPath = fileName.toString() + "_thumbnail.jpg";
+		this.path = fileName.toString();
 	}
 	
 	//set-methods meta
@@ -224,7 +220,7 @@ public class ImageContainer implements Serializable {
 	 * @param img the original image
 	 */
 	private void createThumbnail(BufferedImage img) {
-		Image temp = img.getScaledInstance(img.getWidth() / 10, img.getHeight() / 10, BufferedImage.SCALE_DEFAULT);
+		Image temp = img.getScaledInstance(img.getWidth() / 10, img.getHeight() / 10, BufferedImage.SCALE_SMOOTH);
 		thumbnail = utils.StaticFunctions.toBufferedImage(temp);
 	}
 	
