@@ -98,8 +98,13 @@ public class Peer {
 	
 	
 
+	/**
+	 * Creates a new Peer and generates a Random Point
+	 * Peer will split the oldPeers Zone
+	 */
 	public Peer() {
-			
+		
+		//generateRandomPoint();	
 		
 	}
 	

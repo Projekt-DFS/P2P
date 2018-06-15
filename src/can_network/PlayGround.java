@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -34,10 +35,15 @@ public class PlayGround {
 		//new PlayGround().startBootstrapTest();
 		//new PlayGround().startUserTest();
 		new PlayGround().startImageTest();
-
+		//new PlayGround().startCanTest();
 	}
 	
 	
+	private void startCanTest() {
+		bt = new Bootstrap();
+		Peer p1 = new Peer(bt);
+		System.out.println(p1.toStringZone());
+	}
 	
 	
 	
@@ -53,14 +59,16 @@ public class PlayGround {
 		BufferedImage img;
 		try {
 			
-			img = ImageIO.read(new File("img.jpg"));
-			Point2D.Double coordinate = new Point2D.Double(0.5,0.8);
+			img = ImageIO.read(new File("Classdiagramm.jpg"));
 			String photographer = "Knecht";
-			User owner = new User("user1", "pw");
+			User owner = new User(1,"user1", "pw");
 			Date date = new Date();
 			LinkedList<String> tagList = new LinkedList<String>();
-			bt.createImage(img, coordinate, photographer, owner, date, tagList);
-			//bt.createImage(ic);
+			bt.createImage(img, owner.getName(),"img_001", photographer, date, tagList);
+			
+			ArrayList<String> paths = bt.getPaths("user1");
+			System.out.println(paths.size());
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,11 +79,11 @@ public class PlayGround {
 		ImageContainer ic;
 		bt = new Bootstrap();
 		Point2D.Double coordinate = new Point2D.Double(0.5, 0.8);
-		User owner = new User("user1", "pw");
+		User owner = new User(1,"user1", "pw");
 		
 		try {
-			ic = bt.getImage(owner, coordinate);
-			System.out.println(ic.getPhotographer());
+			ic = bt.loadImageContainer(owner.getName(), "img_001");
+			System.out.println(ic.getCoordinate());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

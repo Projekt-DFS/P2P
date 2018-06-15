@@ -11,7 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,8 +24,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Bootstrap extends Peer {
 
 	//Variables
-	private LinkedList<User> userList;
-	//TODO ID von IP-Adresse ableiten
+	private ArrayList<User> userList;
+	long userCount;
+	private HashSet<String> imageList;				//Form: <username>|<imageName>
 	//private Zone initialZone;
 	
 	/**
@@ -37,21 +41,11 @@ public class Bootstrap extends Peer {
 	 * 
 	 */
 	public Bootstrap() {
-		//TODO extend Peer Quatsch rein Save Images
-		/*
-		 * Eigener Ordner hash-funktion als name
-		 * Peer sucht im ordner nach den image-objekten
-		 * 
-		 * BT - Create Image	--> Eher REST Problem?
-		 * Peer - Save Image
-		 * Peer - Load Image
-		 * 
-		 * 
-		 */
-	
 		//Create or load UserList
-		userList = new LinkedList<User>();
+		userList = new ArrayList<User>();
+		imageList = new HashSet<String>();
 		try {
+			loadUserCount();
 			importUserList();
 		} catch (FileNotFoundException e){
 			
@@ -59,14 +53,50 @@ public class Bootstrap extends Peer {
 			e.printStackTrace();
 		}
 
+		try {
+			this.inet = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		//Create a new Zone
 		createZone(new Point2D.Double(0.0, 0.0), new Point2D.Double(1.0, 1.0));
-		id = 0;					//Bootstrap has always ID 0 TODO: Deprecated
 	}
+	
 	public Bootstrap(Zone tmpZone) {
 		super(tmpZone);
 	}
-
+	
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public User getUser(long id) {
+		//TODO unschön
+		return userList.get((int) id);
+	}
+	
+	
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public User getUser(String username) {
+		//TODO: what, if username does not exist?
+		for(User user : userList) {
+			if(user.getName() == username) {
+				return user;
+			}
+		}
+		throw new IllegalArgumentException("User does not exist");
+	}
+	
+	
 	/**
 	 * Creates a new User
 	 * @param id identifier
@@ -76,13 +106,20 @@ public class Bootstrap extends Peer {
 	 */
 	public String createUser(String name, String password) {
 		can_network.User newUser;
-		newUser = new can_network.User(name, password);
+		newUser = new can_network.User(userCount++, name, password);
 		for(User user : userList) {
 			if(user.getName().equals(name)) {
 				return ("User already exists");
 			}
 		}
 		userList.add(newUser);
+		try {
+			exportUserList();
+			saveUserCount();
+		} catch (Exception e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ("User has been added");
 	}
 
@@ -90,17 +127,18 @@ public class Bootstrap extends Peer {
 	 * Deletes the User
 	 * @param name of the deleting User
 	 */
-	public void deleteUser(String name) {
-		// TODO Auto-generated method stub
-		int i = 0;
-		for(User user : userList) {
-			if (user.getName().equals(name)) {
-				userList.remove(i);
-			}
-			i++;
+	public void deleteUser(String username) {
+		User user = getUser(username);
+		//TODO: Delete all photos from user
+		userList.remove(user);
+		
+		try {
+			exportUserList();
+		} catch (IOException e) {
+			 //TODO Auto-generated catch block
+			System.out.println("noooooo");
 		}
 	}
-
 
 	/**
 	 * Check, if Username and Password are correct
@@ -172,38 +210,56 @@ public class Bootstrap extends Peer {
 	@SuppressWarnings("unchecked")
 	public void importUserList() throws IOException, ClassNotFoundException, FileNotFoundException {
 		ObjectInputStream in;
-		userList = new LinkedList<User>();
+		userList = new ArrayList<User>();
 		in= new ObjectInputStream(
 				new BufferedInputStream(
 						new FileInputStream("userList.dat")));
-		userList= (LinkedList<User>)in.readObject();
+		userList= (ArrayList<User>)in.readObject();
 		in.close();
 
 	}
-
-
-
-	//TODO implement hashFunction
-	public void createImageCalculatingCoordinate(BufferedImage img, String photographer, 
-			User user, Date date, LinkedList<String> tagList) {
-
-	}
-
-
-	//Image functions
+	
 	/**
-	 * Creates an ImageContainer and sends it into the network
-	 * @param ic the ImageContainer to be saved
+	 * Deserializes the UserCount
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
 	 */
-	public void createImage(ImageContainer ic) {
-		try {
-			saveImage(ic);						//TODO: temporary
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private long loadUserCount() throws FileNotFoundException, ClassNotFoundException, IOException {
+		ObjectInputStream in;
+		in= new ObjectInputStream(
+				new BufferedInputStream(
+						new FileInputStream("userCount.dat")));
+		long userCount= (long)in.readObject();
+		
+		in.close();
+		return userCount;
 	}
 	
+	/**
+	 * Serializes the UserCount
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	private void saveUserCount() throws FileNotFoundException, ClassNotFoundException, IOException {
+		ObjectOutputStream out = new ObjectOutputStream(
+				new BufferedOutputStream(
+						new FileOutputStream("userCount.dat")));
+		out.writeObject(userCount);
+		out.close();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Image functions iOS -> Bootstrap
 	/**
 	 * Creates an ImageContainer and sends it into the network
 	 * @param img the image to be saved
@@ -213,13 +269,15 @@ public class Bootstrap extends Peer {
 	 * @param date the date when the image was shot
 	 * @param tagList a list of tags
 	 */
-	public void createImage(BufferedImage img, Point2D.Double canCoordinate,
-			String photographer, User user, Date date, LinkedList<String> tagList) {
-		//Koordinate jetzt erst berechnen?
-		ImageContainer ic = new ImageContainer(img, canCoordinate, photographer, user, date, tagList);
+	public void createImage(BufferedImage img, String username, String imageName, 
+			String photographer, Date date, LinkedList<String> tagList) {
+		
+		String imageID = username + "|" + imageName;
+		ImageContainer ic = new ImageContainer(img, username, imageName, photographer, date, tagList);
+		imageList.add(imageID);
 		//TODO Weiterleiten an die peers
 		try {
-			saveImage(ic);						//TODO: temporary (routing)
+			saveImageContainer(ic);						//TODO: temporary (routing)
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -228,6 +286,49 @@ public class Bootstrap extends Peer {
 	}
 
 	/**
+	 * TODO uses the imageList to search and filter all images in network
+	 * @param username the image's owner
+	 * @return a List with paths of all images from an user
+	 */
+	private ArrayList<String> getListOfImages(String username){
+		//Creates a filtered List with all Images from the user
+		List<String> paths = imageList.stream().
+				filter(s -> s.startsWith(username+ "|")).collect(Collectors.toList());
+		
+		return (ArrayList<String>) paths;
+	}
+	
+	/**
+	 * returns a List with all paths to the images
+	 * @param username
+	 * @return
+	 */
+	public ArrayList<String> getPaths(String username) {
+		String path;
+		ArrayList<String> filteredList = getListOfImages(username);
+		ArrayList<String> paths = new ArrayList<String>();
+		//TODO forwarding to the peers
+		for(String imageName : filteredList) {
+			path = "http://" + getIP() + "//images//" + imageName;
+			paths.add(path);
+		}
+		return paths;
+	}
+	
+	
+	
+	/**
+	 * returns the metadata of an image
+	 * @param username
+	 * @param fileName
+	 */
+	public void getMeta(String username, String fileName) {
+		//TODO implement
+		return;
+	}
+	
+	
+	/**
 	 * Edits the image's meta data
 	 */
 	public void editMeta() {
@@ -235,31 +336,56 @@ public class Bootstrap extends Peer {
 	}
 
 	/**
+	 * Sends the ImageContainer object
+	 * @param ic
+	 */
+	public void sendImage(ImageContainer ic) {
+		//TODO implement
+	}
+	
+	/**
+	 * Sends the ImageContainer's metadata
+	 * @param ic
+	 */
+	public void sendMeta(ImageContainer ic) {
+		//TODO implement
+	}
+	
+
+	
+	
+	
+	
+	//Image functions P2P
+	/**
 	 * Saves an ImageContainer including the image and the thumbnail on the hdd
 	 * @param ic the imageContainer to be saved
 	 */
-	public void saveImage(ImageContainer ic) throws IOException {
-		//Get location
-		StringBuffer fileName = new StringBuffer();
-		fileName.append("Images//").append(ic.getUser().getName()).append("_")
-				.append(utils.StaticFunctions.pointToString(ic.getCoordinate()));
+	public void saveImageContainer(ImageContainer ic) throws IOException {
 		
 		//Save imageContainer
+		File folder = new File("images");
+		
+		if(!folder.exists()) {
+			//TODO create "images" folder
+		}
+		
 		ObjectOutputStream out = new ObjectOutputStream(
 				new BufferedOutputStream(
-						new FileOutputStream(fileName.toString() + ".data")));
+						new FileOutputStream(ic.getPath() + ".data")));
 		out.writeObject(ic);
 		out.close();
 		
 		//Save image
-		File outputFile = new File(fileName.toString() + ".jpg");
+		File outputFile = new File(ic.getPath() + ".jpg");
 		ImageIO.write(ic.getImage(), "jpg", outputFile);
 		
 		//Save thumbnail
-		outputFile = new File(fileName.toString() + "_thumbnail.jpg");
-		ImageIO.write(ic.getThumbnail(), "jpg", outputFile);
+		outputFile = new File(ic.getPath() + "_thumbnail.jpg");
+		ImageIO.write(ic.getThumbnail(), "jpg", outputFile);	
 	}
-
+	
+	
 	/**
 	 * Deserialize imageContainer  
 	 * @param canCoordinate
@@ -267,21 +393,19 @@ public class Bootstrap extends Peer {
 	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException 
 	 */
-	public ImageContainer getImage(User user, Point2D.Double canCoordinate) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public ImageContainer loadImageContainer(String username, String imageName) throws FileNotFoundException, IOException, ClassNotFoundException {
+		
+		//TODO calculate coordinates
+		Point2D.Double coordinate = utils.StaticFunctions.hashToPoint(username, imageName);
+		
 		//Get location
 		StringBuffer fileName = new StringBuffer();
-		fileName.append("Images//").append(user.getName()).append("_")
-				.append(utils.StaticFunctions.pointToString(canCoordinate));
+		fileName.append("Images//").append(username).append(",")
+				.append(imageName);
 		
 		//Load image
 		File inputFile = new File(fileName.toString() + ".jpg");
 		BufferedImage img = ImageIO.read(inputFile);
-		
-		/* Thumbnails will be genereated in IC-Class
-		//Load thumbnail
-		inputFile = new File(fileName.toString() + "_thumbnail.jpg");
-		BufferedImage thumbnail = ImageIO.read(inputFile);
-		*/
 		
 		//Load imageContainer and set image and thumbnail 
 		ImageContainer ic;
@@ -290,42 +414,17 @@ public class Bootstrap extends Peer {
 						new FileInputStream(fileName.toString() + ".data")));
 		ic= (ImageContainer)in.readObject();
 		ic.setImage(img);
-		//ic.createThumbnail(thumbnail);
 		in.close();
 		return ic;
+		
 	}
-	
+		
 	/**
-	 * Generates Point with x and y between 0.0 and 1.0
-	 * @param imageName
-	 * @param userName
-	 * @return coordinatePoint
+	 * Sends the ImageContainer object
+	 * @param ic
 	 */
-	
-	public Point2D.Double hashToPoint(String imageName, String userName) {
-		final double multiplier = 1.0 / 2147483648.0;
-		
-		String xPointHashString, yPointHashString;
-		xPointHashString = imageName + userName;
-		yPointHashString = userName + imageName;
-		
-		Double x, y;
-		
-		if (xPointHashString.hashCode() < 0.0) {
-			x = xPointHashString.hashCode() * multiplier * (-1.0);
-		} else {
-			x = xPointHashString.hashCode() * multiplier;
-		}
-		
-		if (yPointHashString.hashCode() < 0.0) {
-			y = yPointHashString.hashCode() * multiplier * (-1.0);
-		} else {
-			y = yPointHashString.hashCode() * multiplier;
-		}
-	
-		Point2D.Double coordinatePoint = new Point2D.Double(x, y);
-		
-		return coordinatePoint;
+	public void sendImageContainer(ImageContainer ic, Point2D.Double destinationCoordiante) {
+		//TODO implement
 	}
 	
 	/**

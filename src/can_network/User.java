@@ -15,7 +15,7 @@ public class User implements Serializable {
 	//TODO Serializable???
 	private static final long serialVersionUID = -3153801662101748013L;
 	//Variables
-	//private int id;
+	private long id;
 	private String name;
 	private String password;
 	//imageList?
@@ -28,17 +28,17 @@ public class User implements Serializable {
 	 * @param password
 	 */
 	//public User(int id, String name, String password) {
-	public User(String name, String password) {
+	public User(long id, String name, String password) {
 		//TODO id sinnvoll?
-		//this.id=id;
+		this.id=id;
 		setName(name);
 		setPassword(password);
 	}
 	
 	//get-methods
-	/*public int getID() {
+	public long getID() {
 		return id;
-	}*/
+	}
 	
 	public String getName() {
 		return name;
@@ -50,6 +50,9 @@ public class User implements Serializable {
 	
 	
 	//set-methods
+	
+	
+	
 	public void setName(String name) {
 		if (name.trim().isEmpty()) {
 			throw new Exceptions.EmptyStringException();

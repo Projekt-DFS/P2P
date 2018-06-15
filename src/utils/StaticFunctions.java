@@ -20,11 +20,24 @@ public class StaticFunctions {
 	
 	
 	/**
-	 * TODO implement
-	 * @return
+	 * Generates Point with x and y between 0.0 and 1.0
+	 * @param imageName
+	 * @param userName
+	 * @return coordinatePoint
 	 */
-	public static Point2D.Double hashCoordinate() {
-		return null;
+	public static Point2D.Double hashToPoint(String userName, String imageName) {
+		final double multiplier = 1.0 / 2147483648.0;
+		Double x, y;
+		String xPointHashString, yPointHashString;
+		Point2D.Double coordinatePoint;
+		
+		xPointHashString = imageName + userName;
+		yPointHashString = userName + imageName;
+		x = Math.abs(xPointHashString.hashCode() * multiplier);
+		y = Math.abs(yPointHashString.hashCode() * multiplier);
+		coordinatePoint = new Point2D.Double(x, y);
+		
+		return coordinatePoint;
 	}
 	
 	
