@@ -17,10 +17,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.annotation.XmlRootElement;
 
 
-@XmlRootElement
+
 public class Bootstrap extends Peer {
 
 	//Variables
@@ -129,14 +128,19 @@ public class Bootstrap extends Peer {
 	 */
 	public void deleteUser(String username) {
 		User user = getUser(username);
-		//TODO: Delete all photos from user
+		
+		//TODO: getter auf user.imageList
+		//////////ALT: 	ArrayList<String> paths = getPaths(username);
+		//TODO: Routing zum Peer anhand der ArrayList
+		//TODO: REMOVE FOLDER FROM PEER (PEER)
+		
 		userList.remove(user);
 		
 		try {
 			exportUserList();
 		} catch (IOException e) {
 			 //TODO Auto-generated catch block
-			System.out.println("noooooo");
+			e.printStackTrace();
 		}
 	}
 
