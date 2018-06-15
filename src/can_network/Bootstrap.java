@@ -277,6 +277,7 @@ public class Bootstrap extends Peer {
 		imageList.add(imageID);
 		//TODO Weiterleiten an die peers
 		try {
+			//forwardMessage().getIP()
 			saveImageContainer(ic);						//TODO: temporary (routing)
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
