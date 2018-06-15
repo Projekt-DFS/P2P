@@ -3,10 +3,13 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.URI;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+@XmlRootElement
 public class PeerServer {
 	
 	/*
@@ -19,11 +22,13 @@ public class PeerServer {
 	static Zone zoneD = new Zone (new Point2D.Double(0.5, 0.5), new Point2D.Double(0.75, 0.5), new Point2D.Double(0.5, 1.0), new Point2D.Double(0.75, 1.0));
 	static Zone zoneE = new Zone (new Point2D.Double(0.75, 0.5), new Point2D.Double(1.0, 0.5), new Point2D.Double(0.75, 1.0), new Point2D.Double(1.0, 1.0));
 	
+	static Zone bootZone = new Zone (new Point2D.Double(0.0, 0.0), new Point2D.Double(1.0, 0.0), new Point2D.Double(0.0, 1.0), new Point2D.Double(1.0, 1.0));
     /*
      * initialisier der Klasse Peer
      * übergabe der eigenen Zone
      */
-	public static Peer testPeer = new Peer(zoneA);
+	public static Peer testPeer = new Peer(bootZone);
+	//public static Bootstrap testPeer = new Bootstrap(bootZone);
 	
 	public static void main(String [] args ) throws IOException, InterruptedException 
 	   {

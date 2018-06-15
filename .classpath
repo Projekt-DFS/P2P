@@ -39,5 +39,8 @@
 	<classpathentry kind="lib" path="src/can_network/P2P/lib/validation-api-1.1.0.Final.jar"/>
 	<classpathentry kind="lib" path="src/can_network/P2P/lib/yasson-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Memphis/Downloads/jackson-annotations-2.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Memphis/Downloads/jackson-core-2.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Memphis/Downloads/jackson-databind-2.9.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -14,9 +14,10 @@ import java.io.ObjectOutputStream;
 import java.util.*;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
-
+@XmlRootElement
 public class Bootstrap extends Peer {
 
 	//Variables
