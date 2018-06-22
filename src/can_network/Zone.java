@@ -1,6 +1,9 @@
 package can_network;
 import java.awt.geom.Point2D;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Zone {
     private Point2D.Double bottomLeft, bottomRight, upperLeft, upperRight, center;
     private Interval leftY, rightY, bottomX, upperX;
@@ -120,7 +123,7 @@ public class Zone {
     public Interval getBottomX() {
     	return bottomX;
     }
-    
+    @XmlRootElement
     public class Interval {
     	private double min;
     	private double max;

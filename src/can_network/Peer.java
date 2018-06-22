@@ -13,8 +13,15 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.ArrayList;
+
+
+
+
+
 
 
 
@@ -29,22 +36,23 @@ import java.awt.geom.Point2D;
  * @author Thomas Spanier
  *
  */
+@XmlRootElement
 public class Peer {
 	
 	
 	
 	//Variablen
-	private Zone ownZone;
+	public Zone ownZone;
 	public static final int port = 4434;
-	public static final String ip_bootstrap = "192.168.2.109";
+	public static final String ip_bootstrap = "192.168.2.100";
 	//TODO temporary
 	// Aktuelle IP-Adresse des Servers
 
 	public  static String ip_adresse;
-	InetAddress inet;
+	public static InetAddress inet;
 	
 	private  HashMap neighbours = new HashMap();
-	private static HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
+	public static HashMap <Long, Zone> coordinates = new HashMap <Long, Zone>();
     
 
 
@@ -52,6 +60,10 @@ public class Peer {
 	private ArrayList<Integer> neighbourList;				//Fill
 	protected int id;										//TODO useful? for Neighbourlist
 
+	@XmlTransient
+	public Zone getZone() {
+		return ownZone;
+	}
 	
 	//Constructor
 		public Peer(Zone tmpZone) {
@@ -222,7 +234,8 @@ public class Peer {
     */
     public Peer splitZone(Peer newPeer) {
         if (ownZone.isSquare()) {
-        
+        	
+        	
             newPeer.createZone(new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getBottomRight().getY()), ownZone.getUpperRight());
             ownZone.setZone(ownZone.getBottomLeft(), new Point2D.Double(ownZone.calculateCentrePoint().getX(), ownZone.getUpperLeft().getY()));    
         } else {
@@ -301,6 +314,8 @@ public class Peer {
 	    System.out.println( target.path( webContextPath ));
 	*/	
 	}
+	
+
 	
 	/**
 	 * Check if the peer can split his zone with the new peer
